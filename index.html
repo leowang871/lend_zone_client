@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>口袋證券 · 借券專區</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --pkt-red-main: #E95465;
+  --pkt-red-hover: #D03B4C;
+  --pkt-red-deep: #E60039;
+  --pkt-member-bg: #FEEDED;
+  --pkt-pink-50: #FFF2F2;
+  --pkt-ink: #252525;
+  --pkt-gray-700: #3E3A39;
+  --pkt-gray-500: #717071;
+  --pkt-gray-300: #C8C9CA;
+  --pkt-gray-100: #EEEEEF;
+  --pkt-gray-50: #F5F5F5;
+  --pkt-white: #FFFFFF;
+  --pkt-shadow-card: 0 1px 5px 0 rgba(0, 0, 0, 0.05);
+  --pkt-shadow-lift: 3px 5px 10px 0 rgba(0, 0, 0, 0.10);
+  --pkt-shadow-header: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+  --pkt-r-md: 8px;
+  --pkt-r-lg: 10px;
+  --pkt-r-xl: 16px;
+  --pkt-r-pill: 100px;
+  --pkt-font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --pkt-font-latin: "Inter", "Noto Sans TC", sans-serif;
+  --pkt-fs-body: 18px;
+  --pkt-fs-sm: 18px;
+  --content-max: 1200px;
+  --header-h: 72px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--pkt-font-sans);
+  font-size: var(--pkt-fs-body);
+  line-height: 1.5;
+  color: var(--pkt-ink);
+  background: var(--pkt-gray-50);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+.pkt-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-h);
+  background: var(--pkt-white);
+  box-shadow: var(--pkt-shadow-header);
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+}
+.pkt-header--logo-only { justify-content: flex-start; }
+
+.pkt-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--pkt-ink);
+}
+.pkt-shield { width: 40px; height: 40px; color: var(--pkt-red-deep); flex-shrink: 0; }
+.pkt-brand-text { font-weight: 700; font-size: 22px; letter-spacing: 0.04em; }
+
+.pkt-main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+
+.pkt-page-title {
+  margin: 0 0 20px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--pkt-ink);
+  letter-spacing: 0.02em;
+}
+
+.pkt-panel {
+  background: var(--pkt-white);
+  border-radius: var(--pkt-r-xl);
+  box-shadow: var(--pkt-shadow-card);
+  padding: 28px 32px 32px;
+  overflow: hidden;
+}
+
+.pkt-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 24px;
+  border-bottom: 1px solid var(--pkt-gray-100);
+}
+.pkt-tab {
+  padding: 12px 22px;
+  margin-bottom: -1px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  font-size: var(--pkt-fs-body);
+  font-weight: 500;
+  color: var(--pkt-gray-500);
+}
+.pkt-tab:hover {
+  color: var(--pkt-ink);
+}
+.pkt-tab.is-active {
+  color: var(--pkt-red-main);
+  font-weight: 600;
+  border-bottom-color: var(--pkt-red-main);
+}
+.pkt-tab-panel[hidden] {
+  display: none;
+}
+
+.pkt-section-label {
+  margin: 0 0 14px;
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  color: var(--pkt-ink);
+}
+.pkt-section-label--result { margin-top: 0; }
+
+.pkt-rate-bar {
+  margin: 20px 0 24px;
+  padding: 14px 20px;
+  background: var(--pkt-member-bg);
+  border-radius: var(--pkt-r-lg);
+}
+.pkt-rate-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.pkt-rate-bar__main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.pkt-rate-bar__label {
+  margin: 0;
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  color: var(--pkt-ink);
+  white-space: nowrap;
+  line-height: 40px;
+}
+.pkt-rate-bar__control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.pkt-rate-step {
+  width: auto;
+  min-width: 32px;
+  height: 40px;
+  padding: 0 4px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--pkt-ink);
+}
+.pkt-rate-step:hover:not(:disabled) {
+  color: var(--pkt-red-main);
+}
+.pkt-rate-step:focus-visible {
+  outline: 2px solid var(--pkt-red-main);
+  outline-offset: 2px;
+}
+.pkt-rate-step:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.pkt-rate-value {
+  min-width: 64px;
+  font-family: var(--pkt-font-latin);
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--pkt-ink);
+}
+.pkt-rate-bar__hint {
+  margin: 0;
+  padding: 0;
+  font-size: var(--pkt-fs-sm);
+  color: var(--pkt-gray-500);
+  line-height: 1.5;
+  flex: 1 1 200px;
+}
+
+.pkt-query {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 20px;
+  margin-bottom: 8px;
+}
+.pkt-query__field {
+  flex: 1;
+  min-width: 200px;
+  max-width: 360px;
+}
+.pkt-query__field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: var(--pkt-fs-sm);
+  color: var(--pkt-gray-700);
+  font-weight: 500;
+}
+
+.pkt-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--pkt-gray-100);
+  border-radius: var(--pkt-r-md);
+  font-family: inherit;
+  font-size: var(--pkt-fs-body);
+  color: var(--pkt-ink);
+  background: var(--pkt-white);
+}
+.pkt-input:focus {
+  outline: none;
+  border-color: var(--pkt-red-main);
+  box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
+}
+.pkt-input::placeholder { color: var(--pkt-gray-500); }
+
+.pkt-btn-primary {
+  height: 40px;
+  padding: 0 28px;
+  border: none;
+  border-radius: var(--pkt-r-md);
+  background: var(--pkt-red-main);
+  color: #fff;
+  font-size: var(--pkt-fs-body);
+  font-weight: 500;
+}
+.pkt-btn-primary:hover { background: var(--pkt-red-hover); }
+
+.pkt-btn-edit {
+  min-width: 72px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--pkt-red-main);
+  border-radius: var(--pkt-r-md);
+  background: var(--pkt-white);
+  color: var(--pkt-red-main);
+  font-size: var(--pkt-fs-sm);
+  font-weight: 500;
+}
+.pkt-btn-edit:hover {
+  background: var(--pkt-pink-50);
+}
+
+.pkt-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  font-size: var(--pkt-fs-body);
+  text-align: center;
+}
+.pkt-table thead th {
+  background: var(--pkt-member-bg);
+  color: var(--pkt-ink);
+  font-weight: 600;
+  font-size: 18px;
+  padding: 14px 12px;
+}
+.pkt-table thead th:first-child { border-radius: var(--pkt-r-lg) 0 0 var(--pkt-r-lg); }
+.pkt-table thead th:last-child { border-radius: 0 var(--pkt-r-lg) var(--pkt-r-lg) 0; }
+.pkt-table tbody tr td {
+  padding: 16px 12px;
+  font-size: 18px;
+  font-family: var(--pkt-font-latin);
+  font-variant-numeric: tabular-nums;
+}
+.pkt-table tbody tr.row-gray td { background: var(--pkt-gray-50); }
+.pkt-table tbody tr.row-pink td { background: var(--pkt-member-bg); }
+.pkt-table tbody tr td:first-child {
+  border-radius: var(--pkt-r-lg) 0 0 var(--pkt-r-lg);
+  font-weight: 500;
+  font-family: var(--pkt-font-sans);
+}
+.pkt-table tbody tr td:last-child { border-radius: 0 var(--pkt-r-lg) var(--pkt-r-lg) 0; }
+.pkt-table tbody tr[hidden] { display: none; }
+.pkt-table-empty td {
+  padding: 32px 12px !important;
+  color: var(--pkt-gray-500);
+  font-family: var(--pkt-font-sans);
+  font-weight: 400;
+  background: var(--pkt-gray-50) !important;
+  border-radius: var(--pkt-r-lg) !important;
+}
+
+.pkt-select-qty {
+  min-width: 108px;
+  max-width: 140px;
+  height: 36px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--pkt-gray-300);
+  border-radius: var(--pkt-r-md);
+  font-family: var(--pkt-font-latin);
+  font-size: var(--pkt-fs-body);
+  color: var(--pkt-ink);
+  background: var(--pkt-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23717071' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;
+  appearance: none;
+  cursor: pointer;
+}
+.pkt-select-qty:focus {
+  outline: none;
+  border-color: var(--pkt-red-main);
+  box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
+}
+
+.pkt-notes {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--pkt-gray-100);
+  font-size: var(--pkt-fs-sm);
+  color: var(--pkt-gray-700);
+  line-height: 1.7;
+}
+.pkt-notes h3 {
+  margin: 0 0 10px;
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  color: var(--pkt-ink);
+}
+.pkt-notes ul { margin: 0; padding-left: 1.2em; }
+.pkt-notes li { margin-bottom: 6px; }
+
+.pkt-daily-empty {
+  margin: 24px 0 0;
+  text-align: center;
+  font-size: var(--pkt-fs-body);
+  color: var(--pkt-gray-500);
+}
+
+.pkt-time-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--pkt-font-latin);
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.pkt-time-cell__date {
+  font-weight: 600;
+  color: var(--pkt-ink);
+  letter-spacing: 0.02em;
+}
+.pkt-time-cell__clock {
+  font-size: var(--pkt-fs-sm);
+  font-weight: 500;
+  color: var(--pkt-gray-700);
+  font-variant-numeric: tabular-nums;
+}
+
+.pkt-submit-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 32px 0 12px;
+}
+.pkt-btn-submit {
+  min-width: 168px;
+  height: 44px;
+  padding: 0 36px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: var(--pkt-r-pill);
+}
+
+.pkt-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.pkt-modal.is-open {
+  display: flex;
+}
+.pkt-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.pkt-modal__dialog {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: var(--pkt-white);
+  border-radius: var(--pkt-r-xl);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+.pkt-modal__body {
+  padding: 40px 32px 28px;
+  text-align: center;
+}
+.pkt-modal__body--form {
+  padding: 28px 32px 20px;
+  text-align: left;
+}
+.pkt-modal__field {
+  margin-bottom: 18px;
+}
+.pkt-modal__field:last-of-type {
+  margin-bottom: 0;
+}
+.pkt-modal__field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: var(--pkt-fs-sm);
+  font-weight: 500;
+  color: var(--pkt-gray-700);
+}
+.pkt-modal__field--rate label {
+  color: var(--pkt-ink);
+}
+.pkt-modal__readonly {
+  margin: 0;
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  color: var(--pkt-ink);
+}
+.pkt-modal__rate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pkt-modal__rate-value {
+  min-width: 64px;
+  font-family: var(--pkt-font-latin);
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--pkt-red-main);
+  text-align: center;
+}
+.pkt-modal__rate-hint {
+  margin: 10px 0 0;
+  font-size: var(--pkt-fs-sm);
+  font-weight: 500;
+  color: var(--pkt-red-main);
+  line-height: 1.5;
+}
+.pkt-modal__title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--pkt-ink);
+  line-height: 1.5;
+}
+.pkt-modal__sub {
+  margin: 0;
+  font-size: var(--pkt-fs-body);
+  color: var(--pkt-gray-700);
+  line-height: 1.5;
+}
+.pkt-modal__actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 32px 32px;
+}
+.pkt-modal__btn {
+  flex: 1;
+  height: 44px;
+  border-radius: var(--pkt-r-md);
+  font-size: var(--pkt-fs-body);
+  font-weight: 500;
+  cursor: pointer;
+}
+.pkt-modal__btn--cancel {
+  border: 1px solid var(--pkt-red-main);
+  background: var(--pkt-white);
+  color: var(--pkt-red-main);
+}
+.pkt-modal__btn--cancel:hover {
+  background: var(--pkt-pink-50);
+}
+.pkt-modal__btn--submit {
+  border: none;
+  background: var(--pkt-red-main);
+  color: #fff;
+}
+.pkt-modal__btn--submit:hover {
+  background: var(--pkt-red-hover);
+}
+
+.pkt-toast {
+  display: none;
+  position: fixed;
+  top: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 210;
+  padding: 12px 24px;
+  background: var(--pkt-ink);
+  color: #fff;
+  font-size: var(--pkt-fs-sm);
+  border-radius: var(--pkt-r-md);
+  box-shadow: var(--pkt-shadow-lift);
+}
+.pkt-toast.is-visible {
+  display: block;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.float-cs {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--pkt-ink);
+}
+.float-cs__btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--pkt-red-main);
+  box-shadow: 0 4px 14px rgba(233, 84, 101, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+}
+.float-cs__label {
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4px 10px;
+  border-radius: var(--pkt-r-pill);
+  box-shadow: var(--pkt-shadow-card);
+}
+
+@media (max-width: 900px) {
+  .pkt-header { padding: 12px 20px; height: auto; min-height: var(--header-h); }
+  .pkt-main { padding: 24px 20px 64px; }
+}
+@media (max-width: 560px) {
+  .pkt-panel { padding: 20px 16px; overflow-x: auto; }
+  .pkt-rate-bar { padding: 12px 16px; }
+  .pkt-rate-bar__inner { gap: 12px; }
+  .pkt-rate-bar__label { line-height: 1.4; }
+  .pkt-table { min-width: 520px; font-size: 18px; }
+}
+  </style>
+</head>
+<body>
+  <header class="pkt-header pkt-header--logo-only">
+    <a href="#" class="pkt-brand" aria-label="口袋證券">
+      <svg class="pkt-shield" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="currentColor" d="M30.64.06c-.18-.03-.51-.08-.88-.05a4.93 4.93 0 0 0-4.7 4.92v10.07c0 .51-.04 1.02-.11 1.52A9.4 9.4 0 0 1 22.55 21.66c-.22.25-.46.5-.77.78a9.7 9.7 0 0 1-1.77 1.3 10.9 10.9 0 0 1-5 1.34h-.1a10.8 10.8 0 0 1-3.82-.79c-.39-.16-.77-.35-1.12-.55a9.6 9.6 0 0 1-1.24-.85 9.6 9.6 0 0 1-1.3-1.23 9.7 9.7 0 0 1-2.51-6.66V8.13a3.2 3.2 0 0 1 3.16-3.21h17.03V3.19A3.2 3.2 0 0 0 21.92 0H6.38C6.05 0 5.74.02 5.42.07A6.4 6.4 0 0 0 .07 5.42 6.4 6.4 0 0 0 0 6.38v8.66c0 3.62 1.29 6.95 3.43 9.54a14.2 14.2 0 0 0 1.99 2 14 14 0 0 0 .92.76c.04.03.08.06.12.08.26.19.53.36.8.52l.16.1c.27.16.55.32.84.47l.13.06a15.2 15.2 0 0 0 7.57 1.42 14.6 14.6 0 0 0 13.74-12.04V2.94S29.89.93 30.65.1c.02-.01.02-.04 0-.05Z"/>
+      </svg>
+      <span class="pkt-brand-text">口袋證券</span>
+    </a>
+  </header>
+
+  <main class="pkt-main">
+    <h1 class="pkt-page-title">借券專區</h1>
+    <div class="pkt-panel">
+      <div class="pkt-tabs" role="tablist" aria-label="借券專區功能">
+        <button type="button" class="pkt-tab is-active" role="tab" id="tab-btn-apply" aria-selected="true" aria-controls="tab-panel-apply">出借申請</button>
+        <button type="button" class="pkt-tab" role="tab" id="tab-btn-daily" aria-selected="false" aria-controls="tab-panel-daily">當日借券紀錄</button>
+      </div>
+
+      <div class="pkt-tab-panel" id="tab-panel-apply" role="tabpanel" aria-labelledby="tab-btn-apply">
+      <h2 class="pkt-section-label">查詢條件</h2>
+      <form class="pkt-query" id="lend-query-form" action="#" role="search">
+        <div class="pkt-query__field">
+          <label for="symbol-query">標的（中文字或代碼）</label>
+          <input class="pkt-input" type="text" id="symbol-query" name="symbol" placeholder="請輸入股票名稱或代碼" autocomplete="off" />
+        </div>
+        <button type="submit" class="pkt-btn-primary">查詢</button>
+      </form>
+
+      <section class="pkt-rate-bar" aria-labelledby="unified-rate-label">
+        <div class="pkt-rate-bar__inner">
+          <div class="pkt-rate-bar__main">
+            <span id="unified-rate-label" class="pkt-rate-bar__label">借券利率（統一設定）</span>
+            <div class="pkt-rate-bar__control" role="group" aria-labelledby="unified-rate-label" aria-describedby="unified-rate-hint">
+              <button type="button" class="pkt-rate-step" id="rate-decrease" aria-label="降低利率 0.1%">−</button>
+              <span class="pkt-rate-value" id="unified-rate-display" aria-live="polite">3.0%</span>
+              <button type="button" class="pkt-rate-step" id="rate-increase" aria-label="提高利率 0.1%">+</button>
+              <input type="hidden" id="unified-rate" name="unified-rate" value="3.0" />
+            </div>
+          </div>
+          <p class="pkt-rate-bar__hint" id="unified-rate-hint">※ 本次所有借券申請皆套用相同利率</p>
+        </div>
+      </section>
+
+      <h2 class="pkt-section-label pkt-section-label--result">查詢結果</h2>
+      <table class="pkt-table" id="lend-table">
+        <thead>
+          <tr>
+            <th>標的</th>
+            <th>庫存張數</th>
+            <th>出借張數</th>
+          </tr>
+        </thead>
+        <tbody id="lend-tbody">
+          <tr class="row-gray" data-code="2330" data-name="台積電" data-stock="3">
+            <td>2330 台積電</td>
+            <td class="pkt-stock-cell">3</td>
+            <td><select class="pkt-select-qty" data-default="1" aria-label="2330 台積電 出借張數"></select></td>
+          </tr>
+          <tr class="row-pink" data-code="0050" data-name="元大台灣50" data-stock="8">
+            <td>0050 元大台灣50</td>
+            <td class="pkt-stock-cell">8</td>
+            <td><select class="pkt-select-qty" data-default="3" aria-label="0050 元大台灣50 出借張數"></select></td>
+          </tr>
+          <tr class="row-gray" data-code="2317" data-name="鴻海" data-stock="5">
+            <td>2317 鴻海</td>
+            <td class="pkt-stock-cell">5</td>
+            <td><select class="pkt-select-qty" data-default="2" aria-label="2317 鴻海 出借張數"></select></td>
+          </tr>
+          <tr class="row-pink" data-code="2891" data-name="中信金" data-stock="10">
+            <td>2891 中信金</td>
+            <td class="pkt-stock-cell">10</td>
+            <td><select class="pkt-select-qty" data-default="5" aria-label="2891 中信金 出借張數"></select></td>
+          </tr>
+          <tr class="row-gray" data-code="2454" data-name="聯發科" data-stock="2">
+            <td>2454 聯發科</td>
+            <td class="pkt-stock-cell">2</td>
+            <td><select class="pkt-select-qty" data-default="0" aria-label="2454 聯發科 出借張數"></select></td>
+          </tr>
+          <tr class="pkt-table-empty" id="lend-empty" hidden>
+            <td colspan="3">查無符合的標的，請調整關鍵字後再查詢。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pkt-submit-wrap">
+        <button type="button" class="pkt-btn-primary pkt-btn-submit" id="btn-open-confirm">確認送出</button>
+      </div>
+
+      <div class="pkt-notes">
+        <h3>注意事項：</h3>
+        <ul>
+          <li>出借張數請由下拉選單選擇，可選範圍為 0 張至該標的庫存張數，不可超過庫存。</li>
+          <li>借券利率請於上方以 [−] [+] 調整，預設 3.0%，可調範圍 0.0%～7.0%（每次 0.1%），本次所有標的皆套用相同利率。</li>
+          <li>庫存張數為查詢當下可出借參考，實際可出借數量與利率以送出時系統檢核為準。</li>
+        </ul>
+      </div>
+      </div>
+
+      <div class="pkt-tab-panel" id="tab-panel-daily" role="tabpanel" aria-labelledby="tab-btn-daily" hidden>
+        <h2 class="pkt-section-label pkt-section-label--result">當日借券紀錄</h2>
+        <table class="pkt-table" id="daily-record-table">
+          <thead>
+            <tr>
+              <th>時間</th>
+              <th>標的</th>
+              <th>庫存張數</th>
+              <th>借券張數</th>
+              <th>編輯</th>
+            </tr>
+          </thead>
+          <tbody id="daily-record-tbody"></tbody>
+        </table>
+        <p class="pkt-daily-empty" id="daily-record-empty" hidden>今日尚無借券紀錄。</p>
+      </div>
+    </div>
+  </main>
+
+  <div class="pkt-modal" id="record-edit-modal" aria-hidden="true">
+    <button type="button" class="pkt-modal__backdrop" id="record-edit-backdrop" aria-label="關閉"></button>
+    <div class="pkt-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="record-edit-title">
+      <div class="pkt-modal__body pkt-modal__body--form">
+        <p class="pkt-modal__title" id="record-edit-title" style="margin-bottom: 20px; text-align: center;">編輯借券</p>
+        <div class="pkt-modal__field">
+          <label>標的</label>
+          <p class="pkt-modal__readonly" id="record-edit-symbol">—</p>
+        </div>
+        <div class="pkt-modal__field">
+          <label for="record-edit-qty">借券張數</label>
+          <select class="pkt-select-qty" id="record-edit-qty" aria-label="借券張數"></select>
+        </div>
+        <div class="pkt-modal__field pkt-modal__field--rate">
+          <label for="record-edit-rate-control">借券利率</label>
+          <div class="pkt-modal__rate-row" id="record-edit-rate-control" role="group">
+            <button type="button" class="pkt-rate-step" id="record-rate-decrease" aria-label="降低利率 0.1%">−</button>
+            <span class="pkt-modal__rate-value" id="record-edit-rate-display" aria-live="polite">3.0%</span>
+            <button type="button" class="pkt-rate-step" id="record-rate-increase" aria-label="提高利率 0.1%">+</button>
+          </div>
+          <p class="pkt-modal__rate-hint">※ 本次所有借券申請皆套用相同利率</p>
+        </div>
+      </div>
+      <div class="pkt-modal__actions">
+        <button type="button" class="pkt-modal__btn pkt-modal__btn--cancel" id="record-edit-cancel">取消</button>
+        <button type="button" class="pkt-modal__btn pkt-modal__btn--submit" id="record-edit-save">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pkt-modal" id="confirm-modal" aria-hidden="true">
+    <button type="button" class="pkt-modal__backdrop" id="confirm-backdrop" aria-label="關閉"></button>
+    <div class="pkt-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+      <div class="pkt-modal__body">
+        <p class="pkt-modal__title" id="confirm-modal-title">您是否確認借券內容</p>
+        <p class="pkt-modal__sub">送出後不可更改</p>
+      </div>
+      <div class="pkt-modal__actions">
+        <button type="button" class="pkt-modal__btn pkt-modal__btn--cancel" id="confirm-cancel">取消</button>
+        <button type="button" class="pkt-modal__btn pkt-modal__btn--submit" id="confirm-submit">送出</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pkt-toast" id="submit-toast" role="status" aria-live="polite">借券申請已送出</div>
+
+  <a href="#" class="float-cs" aria-label="智能客服">
+    <span class="float-cs__btn" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="56" height="56">
+        <circle cx="32" cy="32" r="30" fill="#FFB7B7"/>
+        <ellipse cx="32" cy="38" rx="18" ry="14" fill="#E95465"/>
+        <circle cx="24" cy="30" r="3" fill="#fff"/>
+        <circle cx="40" cy="30" r="3" fill="#fff"/>
+        <path d="M26 42 Q32 46 38 42" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="float-cs__label">智能客服</span>
+  </a>
+
+  <script>
+(function () {
+  var form = document.getElementById('lend-query-form');
+  var input = document.getElementById('symbol-query');
+  var tbody = document.getElementById('lend-tbody');
+  var emptyRow = document.getElementById('lend-empty');
+  var dataRows = Array.prototype.slice.call(
+    tbody.querySelectorAll('tr[data-code]')
+  );
+
+  function parseStock(row) {
+    var raw = row.getAttribute('data-stock');
+    if (raw) return Math.max(0, parseInt(raw, 10) || 0);
+    var cell = row.querySelector('.pkt-stock-cell');
+    if (!cell) return 0;
+    return Math.max(0, parseInt(cell.textContent.replace(/,/g, ''), 10) || 0);
+  }
+
+  function buildQtySelect(select, stock) {
+    var preferred = parseInt(select.getAttribute('data-default') || '0', 10);
+    if (isNaN(preferred) || preferred < 0) preferred = 0;
+    if (preferred > stock) preferred = stock;
+
+    select.innerHTML = '';
+    var frag = document.createDocumentFragment();
+    for (var n = 0; n <= stock; n += 1) {
+      var opt = document.createElement('option');
+      opt.value = String(n);
+      opt.textContent = n.toLocaleString('zh-TW') + ' 張';
+      if (n === preferred) opt.selected = true;
+      frag.appendChild(opt);
+    }
+    select.appendChild(frag);
+    select.value = String(preferred);
+    select.setAttribute('aria-valuemax', String(stock));
+  }
+
+  var RATE_MIN = 0;
+  var RATE_MAX = 7;
+  var RATE_STEP = 0.1;
+  var RATE_DEFAULT = 3;
+
+  var rateValue = RATE_DEFAULT;
+  var rateDisplay = document.getElementById('unified-rate-display');
+  var rateInput = document.getElementById('unified-rate');
+  var rateDecrease = document.getElementById('rate-decrease');
+  var rateIncrease = document.getElementById('rate-increase');
+
+  function clampRate(value) {
+    if (isNaN(value) || value < RATE_MIN) return RATE_MIN;
+    if (value > RATE_MAX) return RATE_MAX;
+    return Math.round(value * 10) / 10;
+  }
+
+  function formatRateDisplay(value) {
+    return clampRate(value).toFixed(1) + '%';
+  }
+
+  function updateRateUI() {
+    rateValue = clampRate(rateValue);
+    if (rateDisplay) rateDisplay.textContent = formatRateDisplay(rateValue);
+    if (rateInput) rateInput.value = rateValue.toFixed(1);
+    if (rateDecrease) rateDecrease.disabled = rateValue <= RATE_MIN;
+    if (rateIncrease) rateIncrease.disabled = rateValue >= RATE_MAX;
+  }
+
+  function initRateStepper() {
+    rateValue = clampRate(RATE_DEFAULT);
+    updateRateUI();
+    if (rateDecrease) {
+      rateDecrease.addEventListener('click', function () {
+        rateValue = clampRate(rateValue - RATE_STEP);
+        updateRateUI();
+      });
+    }
+    if (rateIncrease) {
+      rateIncrease.addEventListener('click', function () {
+        rateValue = clampRate(rateValue + RATE_STEP);
+        updateRateUI();
+      });
+    }
+  }
+
+  function initQtySelects() {
+    dataRows.forEach(function (row) {
+      var select = row.querySelector('.pkt-select-qty');
+      if (!select) return;
+      buildQtySelect(select, parseStock(row));
+    });
+  }
+
+  function rowMatches(row, query) {
+    if (!query) return true;
+    var code = row.getAttribute('data-code') || '';
+    var name = row.getAttribute('data-name') || '';
+    var label = code + ' ' + name;
+    var q = query.trim();
+    var qLower = q.toLowerCase();
+    return (
+      code.indexOf(q) !== -1 ||
+      name.indexOf(q) !== -1 ||
+      label.indexOf(q) !== -1 ||
+      code.toLowerCase().indexOf(qLower) !== -1 ||
+      label.toLowerCase().indexOf(qLower) !== -1
+    );
+  }
+
+  function applyFilter() {
+    var query = input ? input.value : '';
+    var visible = 0;
+    dataRows.forEach(function (row) {
+      var show = rowMatches(row, query);
+      row.hidden = !show;
+      if (show) {
+        row.className = visible % 2 === 0 ? 'row-gray' : 'row-pink';
+        visible += 1;
+      }
+    });
+    if (emptyRow) {
+      emptyRow.hidden = visible > 0;
+    }
+  }
+
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      applyFilter();
+    });
+  }
+
+  var confirmModal = document.getElementById('confirm-modal');
+  var btnOpenConfirm = document.getElementById('btn-open-confirm');
+  var confirmCancel = document.getElementById('confirm-cancel');
+  var confirmSubmit = document.getElementById('confirm-submit');
+  var confirmBackdrop = document.getElementById('confirm-backdrop');
+  var submitToast = document.getElementById('submit-toast');
+  var toastTimer = null;
+
+  function openConfirmModal() {
+    if (!confirmModal) return;
+    confirmModal.classList.add('is-open');
+    confirmModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    if (confirmCancel) confirmCancel.focus();
+  }
+
+  function closeConfirmModal() {
+    if (!confirmModal) return;
+    confirmModal.classList.remove('is-open');
+    confirmModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    if (btnOpenConfirm) btnOpenConfirm.focus();
+  }
+
+  function showSubmitToast() {
+    if (!submitToast) return;
+    submitToast.classList.add('is-visible');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      submitToast.classList.remove('is-visible');
+    }, 3000);
+  }
+
+  if (btnOpenConfirm) {
+    btnOpenConfirm.addEventListener('click', openConfirmModal);
+  }
+  if (confirmCancel) {
+    confirmCancel.addEventListener('click', closeConfirmModal);
+  }
+  if (confirmBackdrop) {
+    confirmBackdrop.addEventListener('click', closeConfirmModal);
+  }
+  if (confirmSubmit) {
+    confirmSubmit.addEventListener('click', function () {
+      closeConfirmModal();
+      addDailyRecordsFromSubmit();
+      showSubmitToast();
+    });
+  }
+
+  var tabBtnApply = document.getElementById('tab-btn-apply');
+  var tabBtnDaily = document.getElementById('tab-btn-daily');
+  var tabPanelApply = document.getElementById('tab-panel-apply');
+  var tabPanelDaily = document.getElementById('tab-panel-daily');
+
+  function switchTab(tabId) {
+    var isDaily = tabId === 'daily';
+    if (tabBtnApply) {
+      tabBtnApply.classList.toggle('is-active', !isDaily);
+      tabBtnApply.setAttribute('aria-selected', isDaily ? 'false' : 'true');
+    }
+    if (tabBtnDaily) {
+      tabBtnDaily.classList.toggle('is-active', isDaily);
+      tabBtnDaily.setAttribute('aria-selected', isDaily ? 'true' : 'false');
+    }
+    if (tabPanelApply) tabPanelApply.hidden = isDaily;
+    if (tabPanelDaily) tabPanelDaily.hidden = !isDaily;
+  }
+
+  if (tabBtnApply) {
+    tabBtnApply.addEventListener('click', function () { switchTab('apply'); });
+  }
+  if (tabBtnDaily) {
+    tabBtnDaily.addEventListener('click', function () { switchTab('daily'); });
+  }
+
+  var dailyRecords = [
+    { id: 'dr-1', date: '2026/05/20', time: '09:42:18', code: '2330', name: '台積電', stock: 3, qty: 1 },
+    { id: 'dr-2', date: '2026/05/20', time: '10:15:06', code: '0050', name: '元大台灣50', stock: 8, qty: 3 },
+    { id: 'dr-3', date: '2026/05/20', time: '11:03:42', code: '2317', name: '鴻海', stock: 5, qty: 2 }
+  ];
+
+  var dailyTbody = document.getElementById('daily-record-tbody');
+  var dailyEmpty = document.getElementById('daily-record-empty');
+  var recordEditModal = document.getElementById('record-edit-modal');
+  var recordEditBackdrop = document.getElementById('record-edit-backdrop');
+  var recordEditCancel = document.getElementById('record-edit-cancel');
+  var recordEditSave = document.getElementById('record-edit-save');
+  var recordEditSymbol = document.getElementById('record-edit-symbol');
+  var recordEditQty = document.getElementById('record-edit-qty');
+  var recordEditRateDisplay = document.getElementById('record-edit-rate-display');
+  var recordRateDecrease = document.getElementById('record-rate-decrease');
+  var recordRateIncrease = document.getElementById('record-rate-increase');
+  var editingRecordId = null;
+
+  function pad2(n) {
+    return (n < 10 ? '0' : '') + n;
+  }
+
+  function formatDateTimeNow() {
+    var d = new Date();
+    return {
+      date: d.getFullYear() + '/' + pad2(d.getMonth() + 1) + '/' + pad2(d.getDate()),
+      time: pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds())
+    };
+  }
+
+  function normalizeDateSlash(value) {
+    var s = String(value || '').trim();
+    if (!s) return '';
+    var m = s.match(/^(\d{4})[\/\s]+(\d{1,2})[\/\s]+(\d{1,2})$/);
+    if (m) {
+      return m[1] + '/' + pad2(parseInt(m[2], 10) || 0) + '/' + pad2(parseInt(m[3], 10) || 0);
+    }
+    return s;
+  }
+
+  function normalizeTimeHms(value) {
+    var s = String(value || '').trim();
+    if (!s) return '';
+    var parts = s.split(':');
+    if (parts.length === 2) {
+      return pad2(parseInt(parts[0], 10) || 0) + ':' + pad2(parseInt(parts[1], 10) || 0) + ':00';
+    }
+    if (parts.length >= 3) {
+      return pad2(parseInt(parts[0], 10) || 0) + ':' + pad2(parseInt(parts[1], 10) || 0) + ':' + pad2(parseInt(parts[2], 10) || 0);
+    }
+    return s;
+  }
+
+  function ensureRecordDateTime(rec) {
+    var now = formatDateTimeNow();
+    if (!rec.date) rec.date = now.date;
+    if (!rec.time) rec.time = now.time;
+    rec.date = normalizeDateSlash(rec.date);
+    rec.time = normalizeTimeHms(rec.time);
+  }
+
+  function fillTimeCell(td, rec) {
+    ensureRecordDateTime(rec);
+    td.className = 'pkt-time-cell';
+    var dateSpan = document.createElement('span');
+    dateSpan.className = 'pkt-time-cell__date';
+    dateSpan.textContent = rec.date;
+    var clockSpan = document.createElement('span');
+    clockSpan.className = 'pkt-time-cell__clock';
+    clockSpan.textContent = rec.time;
+    td.appendChild(dateSpan);
+    td.appendChild(clockSpan);
+  }
+
+  function symbolLabel(rec) {
+    return rec.code + ' ' + rec.name;
+  }
+
+  function findRecord(id) {
+    for (var i = 0; i < dailyRecords.length; i += 1) {
+      if (dailyRecords[i].id === id) return dailyRecords[i];
+    }
+    return null;
+  }
+
+  function renderDailyRecords() {
+    if (!dailyTbody) return;
+    dailyTbody.innerHTML = '';
+    if (dailyRecords.length === 0) {
+      if (dailyEmpty) dailyEmpty.hidden = false;
+      return;
+    }
+    if (dailyEmpty) dailyEmpty.hidden = true;
+
+    dailyRecords.forEach(function (rec, index) {
+      var tr = document.createElement('tr');
+      tr.className = index % 2 === 0 ? 'row-gray' : 'row-pink';
+      tr.setAttribute('data-record-id', rec.id);
+
+      var tdTime = document.createElement('td');
+      fillTimeCell(tdTime, rec);
+
+      var tdSymbol = document.createElement('td');
+      tdSymbol.textContent = symbolLabel(rec);
+      tdSymbol.style.fontFamily = 'var(--pkt-font-sans)';
+
+      var tdStock = document.createElement('td');
+      tdStock.className = 'pkt-stock-cell';
+      tdStock.textContent = String(rec.stock);
+
+      var tdQty = document.createElement('td');
+      tdQty.className = 'pkt-qty-cell';
+      tdQty.textContent = rec.qty.toLocaleString('zh-TW') + ' 張';
+
+      var tdEdit = document.createElement('td');
+      var btnEdit = document.createElement('button');
+      btnEdit.type = 'button';
+      btnEdit.className = 'pkt-btn-edit';
+      btnEdit.textContent = '編輯';
+      btnEdit.setAttribute('aria-label', '編輯 ' + symbolLabel(rec));
+      btnEdit.addEventListener('click', function () {
+        openRecordEditModal(rec.id);
+      });
+      tdEdit.appendChild(btnEdit);
+
+      tr.appendChild(tdTime);
+      tr.appendChild(tdSymbol);
+      tr.appendChild(tdStock);
+      tr.appendChild(tdQty);
+      tr.appendChild(tdEdit);
+      dailyTbody.appendChild(tr);
+    });
+  }
+
+  function buildRecordQtySelect(stock, selected) {
+    if (!recordEditQty) return;
+    recordEditQty.innerHTML = '';
+    var preferred = Math.max(0, Math.min(selected, stock));
+    var frag = document.createDocumentFragment();
+    for (var n = 0; n <= stock; n += 1) {
+      var opt = document.createElement('option');
+      opt.value = String(n);
+      opt.textContent = n.toLocaleString('zh-TW') + ' 張';
+      if (n === preferred) opt.selected = true;
+      frag.appendChild(opt);
+    }
+    recordEditQty.appendChild(frag);
+    recordEditQty.value = String(preferred);
+  }
+
+  function syncRecordEditRateUI() {
+    if (recordEditRateDisplay) {
+      recordEditRateDisplay.textContent = formatRateDisplay(rateValue);
+    }
+    if (recordRateDecrease) recordRateDecrease.disabled = rateValue <= RATE_MIN;
+    if (recordRateIncrease) recordRateIncrease.disabled = rateValue >= RATE_MAX;
+    updateRateUI();
+  }
+
+  function openRecordEditModal(recordId) {
+    var rec = findRecord(recordId);
+    if (!rec || !recordEditModal) return;
+    editingRecordId = recordId;
+    if (recordEditSymbol) recordEditSymbol.textContent = symbolLabel(rec);
+    buildRecordQtySelect(rec.stock, rec.qty);
+    syncRecordEditRateUI();
+    recordEditModal.classList.add('is-open');
+    recordEditModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    if (recordEditQty) recordEditQty.focus();
+  }
+
+  function closeRecordEditModal() {
+    if (!recordEditModal) return;
+    recordEditModal.classList.remove('is-open');
+    recordEditModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    editingRecordId = null;
+  }
+
+  function saveRecordEdit() {
+    if (!editingRecordId) return;
+    var rec = findRecord(editingRecordId);
+    if (!rec) return;
+    if (recordEditQty) {
+      rec.qty = parseInt(recordEditQty.value, 10) || 0;
+    }
+    closeRecordEditModal();
+    renderDailyRecords();
+  }
+
+  function addDailyRecordsFromSubmit() {
+    var now = formatDateTimeNow();
+    var added = false;
+    dataRows.forEach(function (row) {
+      if (row.hidden) return;
+      var select = row.querySelector('.pkt-select-qty');
+      if (!select) return;
+      var qty = parseInt(select.value, 10) || 0;
+      if (qty <= 0) return;
+      var code = row.getAttribute('data-code') || '';
+      var name = row.getAttribute('data-name') || '';
+      var stock = parseStock(row);
+      var existing = null;
+      for (var i = 0; i < dailyRecords.length; i += 1) {
+        if (dailyRecords[i].code === code) {
+          existing = dailyRecords[i];
+          break;
+        }
+      }
+      if (existing) {
+        existing.qty = qty;
+        existing.date = now.date;
+        existing.time = now.time;
+        existing.stock = stock;
+      } else {
+        dailyRecords.push({
+          id: 'dr-' + Date.now() + '-' + code,
+          date: now.date,
+          time: now.time,
+          code: code,
+          name: name,
+          stock: stock,
+          qty: qty
+        });
+      }
+      added = true;
+    });
+    if (added) renderDailyRecords();
+  }
+
+  if (recordEditCancel) {
+    recordEditCancel.addEventListener('click', closeRecordEditModal);
+  }
+  if (recordEditBackdrop) {
+    recordEditBackdrop.addEventListener('click', closeRecordEditModal);
+  }
+  if (recordEditSave) {
+    recordEditSave.addEventListener('click', saveRecordEdit);
+  }
+  if (recordRateDecrease) {
+    recordRateDecrease.addEventListener('click', function () {
+      rateValue = clampRate(rateValue - RATE_STEP);
+      syncRecordEditRateUI();
+    });
+  }
+  if (recordRateIncrease) {
+    recordRateIncrease.addEventListener('click', function () {
+      rateValue = clampRate(rateValue + RATE_STEP);
+      syncRecordEditRateUI();
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (recordEditModal && recordEditModal.classList.contains('is-open')) {
+      closeRecordEditModal();
+      return;
+    }
+    if (confirmModal && confirmModal.classList.contains('is-open')) {
+      closeConfirmModal();
+    }
+  });
+
+  initRateStepper();
+  initQtySelects();
+  applyFilter();
+  renderDailyRecords();
+})();
+  </script>
+</body>
+</html>

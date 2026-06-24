@@ -252,6 +252,10 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 500;
 }
 .pkt-btn-primary:hover { background: var(--pkt-red-hover); }
+.pkt-btn-primary:disabled {
+  background: var(--pkt-gray-300);
+  cursor: not-allowed;
+}
 
 .pkt-btn-edit {
   min-width: 72px;
@@ -326,6 +330,75 @@ button { font-family: inherit; cursor: pointer; }
   outline: none;
   border-color: var(--pkt-red-main);
   box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
+}
+
+.pkt-row-rate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 140px;
+}
+
+.pkt-row-rate__value {
+  min-width: 48px;
+  font-family: var(--pkt-font-latin);
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--pkt-ink);
+  text-align: center;
+}
+
+.pkt-complete-notice {
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  border: 1px solid rgba(233, 84, 101, 0.24);
+  border-radius: var(--pkt-r-lg);
+  background: var(--pkt-pink-50);
+  color: var(--pkt-red-main);
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.pkt-application-locked .pkt-table tbody td {
+  color: var(--pkt-gray-500);
+}
+
+.pkt-application-locked .pkt-select-qty,
+.pkt-application-locked .pkt-rate-step,
+.pkt-application-locked .pkt-btn-submit {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pkt-submit-summary {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--pkt-gray-100);
+  border-radius: var(--pkt-r-lg);
+  overflow: hidden;
+  text-align: left;
+}
+
+.pkt-submit-summary__item {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 0.8fr;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--pkt-gray-100);
+  font-size: var(--pkt-fs-sm);
+}
+
+.pkt-submit-summary__item:last-child {
+  border-bottom: none;
+}
+
+.pkt-submit-summary__head {
+  background: var(--pkt-member-bg);
+  font-weight: 600;
 }
 
 .pkt-notes {
@@ -593,34 +666,13 @@ body.modal-open {
     <div class="pkt-panel">
       <div class="pkt-tabs" role="tablist" aria-label="借券專區功能">
         <button type="button" class="pkt-tab is-active" role="tab" id="tab-btn-apply" aria-selected="true" aria-controls="tab-panel-apply">出借申請</button>
-        <button type="button" class="pkt-tab" role="tab" id="tab-btn-daily" aria-selected="false" aria-controls="tab-panel-daily">當日借券紀錄</button>
       </div>
 
       <div class="pkt-tab-panel" id="tab-panel-apply" role="tabpanel" aria-labelledby="tab-btn-apply">
-      <h2 class="pkt-section-label">查詢條件</h2>
-      <form class="pkt-query" id="lend-query-form" action="#" role="search">
-        <div class="pkt-query__field">
-          <label for="symbol-query">標的（中文字或代碼）</label>
-          <input class="pkt-input" type="text" id="symbol-query" name="symbol" placeholder="請輸入股票名稱或代碼" autocomplete="off" />
-        </div>
-        <button type="submit" class="pkt-btn-primary">查詢</button>
-      </form>
-
-      <section class="pkt-rate-bar" aria-labelledby="unified-rate-label">
-        <div class="pkt-rate-bar__inner">
-          <div class="pkt-rate-bar__main">
-            <span id="unified-rate-label" class="pkt-rate-bar__label">借券利率（統一設定）</span>
-            <div class="pkt-rate-bar__control" role="group" aria-labelledby="unified-rate-label" aria-describedby="unified-rate-hint">
-              <button type="button" class="pkt-rate-step" id="rate-decrease" aria-label="降低利率 0.1%">−</button>
-              <span class="pkt-rate-value" id="unified-rate-display" aria-live="polite">3.0%</span>
-              <button type="button" class="pkt-rate-step" id="rate-increase" aria-label="提高利率 0.1%">+</button>
-              <input type="hidden" id="unified-rate" name="unified-rate" value="3.0" />
-            </div>
-          </div>
-          <p class="pkt-rate-bar__hint" id="unified-rate-hint">※ 本次所有借券申請皆套用相同利率</p>
-        </div>
-      </section>
-
+      <div class="pkt-complete-notice" id="complete-notice" hidden>
+        出借申請已完成，若有出借成功，後續將通知您 非常感謝<br />
+        <span id="remaining-quota-text">目前的額度剩餘：—</span>
+      </div>
       <h2 class="pkt-section-label pkt-section-label--result">查詢結果</h2>
       <table class="pkt-table" id="lend-table">
         <thead>
@@ -628,6 +680,7 @@ body.modal-open {
             <th>標的</th>
             <th>庫存張數</th>
             <th>出借張數</th>
+            <th>利率</th>
           </tr>
         </thead>
         <tbody id="lend-tbody">
@@ -635,29 +688,64 @@ body.modal-open {
             <td>2330 台積電</td>
             <td class="pkt-stock-cell">3</td>
             <td><select class="pkt-select-qty" data-default="1" aria-label="2330 台積電 出借張數"></select></td>
+            <td>
+              <div class="pkt-row-rate" role="group" aria-label="2330 台積電 利率">
+                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
+                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
+              </div>
+            </td>
           </tr>
           <tr class="row-pink" data-code="0050" data-name="元大台灣50" data-stock="8">
             <td>0050 元大台灣50</td>
             <td class="pkt-stock-cell">8</td>
             <td><select class="pkt-select-qty" data-default="3" aria-label="0050 元大台灣50 出借張數"></select></td>
+            <td>
+              <div class="pkt-row-rate" role="group" aria-label="0050 元大台灣50 利率">
+                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
+                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
+              </div>
+            </td>
           </tr>
           <tr class="row-gray" data-code="2317" data-name="鴻海" data-stock="5">
             <td>2317 鴻海</td>
             <td class="pkt-stock-cell">5</td>
             <td><select class="pkt-select-qty" data-default="2" aria-label="2317 鴻海 出借張數"></select></td>
+            <td>
+              <div class="pkt-row-rate" role="group" aria-label="2317 鴻海 利率">
+                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
+                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
+              </div>
+            </td>
           </tr>
           <tr class="row-pink" data-code="2891" data-name="中信金" data-stock="10">
             <td>2891 中信金</td>
             <td class="pkt-stock-cell">10</td>
             <td><select class="pkt-select-qty" data-default="5" aria-label="2891 中信金 出借張數"></select></td>
+            <td>
+              <div class="pkt-row-rate" role="group" aria-label="2891 中信金 利率">
+                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
+                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
+              </div>
+            </td>
           </tr>
           <tr class="row-gray" data-code="2454" data-name="聯發科" data-stock="2">
             <td>2454 聯發科</td>
             <td class="pkt-stock-cell">2</td>
             <td><select class="pkt-select-qty" data-default="0" aria-label="2454 聯發科 出借張數"></select></td>
+            <td>
+              <div class="pkt-row-rate" role="group" aria-label="2454 聯發科 利率">
+                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
+                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
+              </div>
+            </td>
           </tr>
           <tr class="pkt-table-empty" id="lend-empty" hidden>
-            <td colspan="3">查無符合的標的，請調整關鍵字後再查詢。</td>
+            <td colspan="4">查無符合的標的，請調整關鍵字後再查詢。</td>
           </tr>
         </tbody>
       </table>
@@ -670,60 +758,13 @@ body.modal-open {
         <h3>注意事項：</h3>
         <ul>
           <li>出借張數請由下拉選單選擇，可選範圍為 0 張至該標的庫存張數，不可超過庫存。</li>
-          <li>借券利率請於上方以 [−] [+] 調整，預設 3.0%，可調範圍 0.0%～7.0%（每次 0.1%），本次所有標的皆套用相同利率。</li>
+          <li>借券利率請於各標的列右側以 [−] [+] 調整，預設 3%，可調範圍 1%～7%（每次 1%），調整任一標的會同步套用全部標的。</li>
           <li>庫存張數為查詢當下可出借參考，實際可出借數量與利率以送出時系統檢核為準。</li>
         </ul>
       </div>
       </div>
-
-      <div class="pkt-tab-panel" id="tab-panel-daily" role="tabpanel" aria-labelledby="tab-btn-daily" hidden>
-        <h2 class="pkt-section-label pkt-section-label--result">當日借券紀錄</h2>
-        <table class="pkt-table" id="daily-record-table">
-          <thead>
-            <tr>
-              <th>時間</th>
-              <th>標的</th>
-              <th>庫存張數</th>
-              <th>借券張數</th>
-              <th>編輯</th>
-            </tr>
-          </thead>
-          <tbody id="daily-record-tbody"></tbody>
-        </table>
-        <p class="pkt-daily-empty" id="daily-record-empty" hidden>今日尚無借券紀錄。</p>
-      </div>
     </div>
   </main>
-
-  <div class="pkt-modal" id="record-edit-modal" aria-hidden="true">
-    <button type="button" class="pkt-modal__backdrop" id="record-edit-backdrop" aria-label="關閉"></button>
-    <div class="pkt-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="record-edit-title">
-      <div class="pkt-modal__body pkt-modal__body--form">
-        <p class="pkt-modal__title" id="record-edit-title" style="margin-bottom: 20px; text-align: center;">編輯借券</p>
-        <div class="pkt-modal__field">
-          <label>標的</label>
-          <p class="pkt-modal__readonly" id="record-edit-symbol">—</p>
-        </div>
-        <div class="pkt-modal__field">
-          <label for="record-edit-qty">借券張數</label>
-          <select class="pkt-select-qty" id="record-edit-qty" aria-label="借券張數"></select>
-        </div>
-        <div class="pkt-modal__field pkt-modal__field--rate">
-          <label for="record-edit-rate-control">借券利率</label>
-          <div class="pkt-modal__rate-row" id="record-edit-rate-control" role="group">
-            <button type="button" class="pkt-rate-step" id="record-rate-decrease" aria-label="降低利率 0.1%">−</button>
-            <span class="pkt-modal__rate-value" id="record-edit-rate-display" aria-live="polite">3.0%</span>
-            <button type="button" class="pkt-rate-step" id="record-rate-increase" aria-label="提高利率 0.1%">+</button>
-          </div>
-          <p class="pkt-modal__rate-hint">※ 本次所有借券申請皆套用相同利率</p>
-        </div>
-      </div>
-      <div class="pkt-modal__actions">
-        <button type="button" class="pkt-modal__btn pkt-modal__btn--cancel" id="record-edit-cancel">取消</button>
-        <button type="button" class="pkt-modal__btn pkt-modal__btn--submit" id="record-edit-save">儲存</button>
-      </div>
-    </div>
-  </div>
 
   <div class="pkt-modal" id="confirm-modal" aria-hidden="true">
     <button type="button" class="pkt-modal__backdrop" id="confirm-backdrop" aria-label="關閉"></button>
@@ -731,6 +772,7 @@ body.modal-open {
       <div class="pkt-modal__body">
         <p class="pkt-modal__title" id="confirm-modal-title">您是否確認借券內容</p>
         <p class="pkt-modal__sub">送出後不可更改</p>
+        <ul class="pkt-submit-summary" id="confirm-summary" aria-label="確認借券明細"></ul>
       </div>
       <div class="pkt-modal__actions">
         <button type="button" class="pkt-modal__btn pkt-modal__btn--cancel" id="confirm-cancel">取消</button>
@@ -791,9 +833,9 @@ body.modal-open {
     select.setAttribute('aria-valuemax', String(stock));
   }
 
-  var RATE_MIN = 0;
+  var RATE_MIN = 1;
   var RATE_MAX = 7;
-  var RATE_STEP = 0.1;
+  var RATE_STEP = 1;
   var RATE_DEFAULT = 3;
 
   var rateValue = RATE_DEFAULT;
@@ -805,19 +847,28 @@ body.modal-open {
   function clampRate(value) {
     if (isNaN(value) || value < RATE_MIN) return RATE_MIN;
     if (value > RATE_MAX) return RATE_MAX;
-    return Math.round(value * 10) / 10;
+    return Math.round(value);
   }
 
   function formatRateDisplay(value) {
-    return clampRate(value).toFixed(1) + '%';
+    return clampRate(value) + '%';
   }
 
   function updateRateUI() {
     rateValue = clampRate(rateValue);
     if (rateDisplay) rateDisplay.textContent = formatRateDisplay(rateValue);
-    if (rateInput) rateInput.value = rateValue.toFixed(1);
+    if (rateInput) rateInput.value = String(rateValue);
     if (rateDecrease) rateDecrease.disabled = rateValue <= RATE_MIN;
     if (rateIncrease) rateIncrease.disabled = rateValue >= RATE_MAX;
+    document.querySelectorAll('.pkt-row-rate__value').forEach(function (node) {
+      node.textContent = formatRateDisplay(rateValue);
+    });
+    document.querySelectorAll('.pkt-row-rate__decrease').forEach(function (btn) {
+      btn.disabled = rateValue <= RATE_MIN;
+    });
+    document.querySelectorAll('.pkt-row-rate__increase').forEach(function (btn) {
+      btn.disabled = rateValue >= RATE_MAX;
+    });
   }
 
   function initRateStepper() {
@@ -835,6 +886,18 @@ body.modal-open {
         updateRateUI();
       });
     }
+    document.querySelectorAll('.pkt-row-rate__decrease').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        rateValue = clampRate(rateValue - RATE_STEP);
+        updateRateUI();
+      });
+    });
+    document.querySelectorAll('.pkt-row-rate__increase').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        rateValue = clampRate(rateValue + RATE_STEP);
+        updateRateUI();
+      });
+    });
   }
 
   function initQtySelects() {
@@ -889,11 +952,17 @@ body.modal-open {
   var confirmCancel = document.getElementById('confirm-cancel');
   var confirmSubmit = document.getElementById('confirm-submit');
   var confirmBackdrop = document.getElementById('confirm-backdrop');
+  var confirmSummary = document.getElementById('confirm-summary');
   var submitToast = document.getElementById('submit-toast');
+  var completeNotice = document.getElementById('complete-notice');
+  var remainingQuotaText = document.getElementById('remaining-quota-text');
+  var tabPanelApply = document.getElementById('tab-panel-apply');
+  var isSubmitted = false;
   var toastTimer = null;
 
   function openConfirmModal() {
     if (!confirmModal) return;
+    renderApplicationSummary(confirmSummary, collectSubmittedItems());
     confirmModal.classList.add('is-open');
     confirmModal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('modal-open');
@@ -917,8 +986,71 @@ body.modal-open {
     }, 3000);
   }
 
+  function collectSubmittedItems() {
+    return dataRows.map(function (row) {
+      var select = row.querySelector('.pkt-select-qty');
+      var qty = select ? (parseInt(select.value, 10) || 0) : 0;
+      if (qty <= 0) return null;
+      return {
+        symbol: (row.getAttribute('data-code') || '') + ' ' + (row.getAttribute('data-name') || ''),
+        qty: qty,
+        rate: formatRateDisplay(rateValue)
+      };
+    }).filter(Boolean);
+  }
+
+  function calculateRemainingQuota() {
+    return dataRows.reduce(function (sum, row) {
+      var stock = parseStock(row);
+      var select = row.querySelector('.pkt-select-qty');
+      var qty = select ? (parseInt(select.value, 10) || 0) : 0;
+      return sum + Math.max(0, stock - qty);
+    }, 0);
+  }
+
+  function renderApplicationSummary(target, items) {
+    if (!target) return;
+    target.innerHTML = '';
+    var head = document.createElement('li');
+    head.className = 'pkt-submit-summary__item pkt-submit-summary__head';
+    head.innerHTML = '<span>出借標的</span><span>張數</span><span>利率</span>';
+    target.appendChild(head);
+    if (!items.length) {
+      var empty = document.createElement('li');
+      empty.className = 'pkt-submit-summary__item';
+      empty.innerHTML = '<span>未選擇出借標的</span><span>0 張</span><span>' + formatRateDisplay(rateValue) + '</span>';
+      target.appendChild(empty);
+      return;
+    }
+    items.forEach(function (item) {
+      var li = document.createElement('li');
+      li.className = 'pkt-submit-summary__item';
+      li.innerHTML = '<span>' + item.symbol + '</span><span>' + item.qty.toLocaleString('zh-TW') + ' 張</span><span>' + item.rate + '</span>';
+      target.appendChild(li);
+    });
+  }
+
+  function lockSubmittedForm() {
+    isSubmitted = true;
+    if (tabPanelApply) tabPanelApply.classList.add('pkt-application-locked');
+    if (completeNotice) completeNotice.hidden = false;
+    if (remainingQuotaText) {
+      remainingQuotaText.textContent = '目前的額度剩餘：' + calculateRemainingQuota().toLocaleString('zh-TW') + ' 張';
+    }
+    if (btnOpenConfirm) btnOpenConfirm.disabled = true;
+    document.querySelectorAll('#lend-tbody .pkt-select-qty').forEach(function (select) {
+      select.disabled = true;
+    });
+    document.querySelectorAll('.pkt-row-rate__decrease, .pkt-row-rate__increase').forEach(function (btn) {
+      btn.disabled = true;
+    });
+  }
+
   if (btnOpenConfirm) {
-    btnOpenConfirm.addEventListener('click', openConfirmModal);
+    btnOpenConfirm.addEventListener('click', function () {
+      if (isSubmitted) return;
+      openConfirmModal();
+    });
   }
   if (confirmCancel) {
     confirmCancel.addEventListener('click', closeConfirmModal);
@@ -929,8 +1061,7 @@ body.modal-open {
   if (confirmSubmit) {
     confirmSubmit.addEventListener('click', function () {
       closeConfirmModal();
-      addDailyRecordsFromSubmit();
-      showSubmitToast();
+      lockSubmittedForm();
     });
   }
 

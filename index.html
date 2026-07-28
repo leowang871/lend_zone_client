@@ -90,7 +90,7 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: var(--pkt-r-xl);
   box-shadow: var(--pkt-shadow-card);
   padding: 28px 32px 32px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .pkt-tabs {
@@ -312,42 +312,150 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: var(--pkt-r-lg) !important;
 }
 
-.pkt-select-qty {
-  min-width: 108px;
-  max-width: 140px;
-  height: 36px;
-  padding: 0 32px 0 12px;
-  border: 1px solid var(--pkt-gray-300);
-  border-radius: var(--pkt-r-md);
-  font-family: var(--pkt-font-latin);
-  font-size: var(--pkt-fs-body);
-  color: var(--pkt-ink);
-  background: var(--pkt-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23717071' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;
-  appearance: none;
-  cursor: pointer;
-}
-.pkt-select-qty:focus {
-  outline: none;
-  border-color: var(--pkt-red-main);
-  box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
-}
-
-.pkt-row-rate {
+.pkt-th-with-tip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-width: 140px;
+  gap: 6px;
+  position: relative;
 }
 
-.pkt-row-rate__value {
-  min-width: 48px;
+.pkt-tip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1.5px solid var(--pkt-gray-500);
+  border-radius: 50%;
+  background: var(--pkt-white);
+  color: var(--pkt-gray-700);
+  font-family: var(--pkt-font-latin);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.pkt-tip-btn:hover,
+.pkt-tip-btn[aria-expanded="true"] {
+  border-color: var(--pkt-red-main);
+  color: var(--pkt-red-main);
+  background: var(--pkt-pink-50);
+}
+.pkt-tip-btn:focus-visible {
+  outline: 2px solid var(--pkt-red-main);
+  outline-offset: 2px;
+}
+
+.pkt-tip-bubble {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: auto;
+  z-index: 1200;
+  width: min(280px, calc(100vw - 24px));
+  padding: 12px 14px;
+  border: 1px solid rgba(233, 84, 101, 0.24);
+  border-radius: var(--pkt-r-md);
+  background: var(--pkt-white);
+  box-shadow: 0 8px 24px rgba(35, 24, 21, 0.12);
+  color: var(--pkt-ink);
+  font-family: var(--pkt-font-sans);
+  font-size: var(--pkt-fs-sm);
+  font-weight: 400;
+  line-height: 1.55;
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+}
+.pkt-tip-bubble::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: var(--tip-arrow-left, 12px);
+  right: auto;
+  width: 10px;
+  height: 10px;
+  background: var(--pkt-white);
+  border-left: 1px solid rgba(233, 84, 101, 0.24);
+  border-top: 1px solid rgba(233, 84, 101, 0.24);
+  transform: rotate(45deg);
+}
+.pkt-th-with-tip.is-open .pkt-tip-bubble,
+.pkt-th-with-tip.is-hover .pkt-tip-bubble {
+  display: block;
+}
+
+.pkt-row-qty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 168px;
+}
+
+.pkt-row-qty__input {
+  width: 48px;
+  height: 36px;
+  padding: 0 4px;
+  border: 1px solid var(--pkt-gray-300);
+  border-radius: var(--pkt-r-md);
   font-family: var(--pkt-font-latin);
   font-size: var(--pkt-fs-body);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--pkt-ink);
   text-align: center;
+  background: var(--pkt-white);
+  box-sizing: border-box;
+}
+
+.pkt-row-qty__input:focus {
+  outline: none;
+  border-color: var(--pkt-red-main);
+  box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
+}
+
+.pkt-row-unit {
+  min-width: 1.25em;
+  font-family: var(--pkt-font-sans);
+  font-size: var(--pkt-fs-sm);
+  font-weight: 500;
+  color: var(--pkt-gray-700);
+  line-height: 1;
+}
+
+.pkt-row-rate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 156px;
+}
+
+.pkt-row-rate__input {
+  width: 48px;
+  height: 36px;
+  padding: 0 4px;
+  border: 1px solid var(--pkt-gray-300);
+  border-radius: var(--pkt-r-md);
+  font-family: var(--pkt-font-latin);
+  font-size: var(--pkt-fs-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--pkt-ink);
+  text-align: center;
+  background: var(--pkt-white);
+  box-sizing: border-box;
+}
+
+.pkt-row-rate__input:focus {
+  outline: none;
+  border-color: var(--pkt-red-main);
+  box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
 }
 
 .pkt-complete-notice {
@@ -366,7 +474,8 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--pkt-gray-500);
 }
 
-.pkt-application-locked .pkt-select-qty,
+.pkt-application-locked .pkt-row-qty__input,
+.pkt-application-locked .pkt-row-rate__input,
 .pkt-application-locked .pkt-rate-step,
 .pkt-application-locked .pkt-btn-submit {
   opacity: 0.55;
@@ -452,12 +561,13 @@ button { font-family: inherit; cursor: pointer; }
   margin: 32px 0 12px;
 }
 .pkt-btn-submit {
-  min-width: 168px;
+  min-width: 240px;
   height: 44px;
-  padding: 0 36px;
+  padding: 0 28px;
   font-size: 18px;
   font-weight: 600;
   border-radius: var(--pkt-r-pill);
+  white-space: nowrap;
 }
 
 .pkt-modal {
@@ -543,15 +653,16 @@ button { font-family: inherit; cursor: pointer; }
 }
 .pkt-modal__title {
   margin: 0 0 12px;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--pkt-ink);
   line-height: 1.5;
 }
 .pkt-modal__sub {
   margin: 0;
-  font-size: var(--pkt-fs-body);
-  color: var(--pkt-gray-700);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pkt-red-main);
   line-height: 1.5;
 }
 .pkt-modal__actions {
@@ -638,27 +749,330 @@ body.modal-open {
   box-shadow: var(--pkt-shadow-card);
 }
 
+.pkt-mobile-menu,
+.pkt-mobile-logout,
+.pkt-mobile-select,
+.pkt-mobile-label,
+.pkt-modal__mobile-warning {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .pkt-header { padding: 12px 20px; height: auto; min-height: var(--header-h); }
   .pkt-main { padding: 24px 20px 64px; }
 }
 @media (max-width: 560px) {
-  .pkt-panel { padding: 20px 16px; overflow-x: auto; }
-  .pkt-rate-bar { padding: 12px 16px; }
-  .pkt-rate-bar__inner { gap: 12px; }
-  .pkt-rate-bar__label { line-height: 1.4; }
-  .pkt-table { min-width: 520px; font-size: 18px; }
+  :root {
+    --header-h: 56px;
+    --pkt-fs-body: 14px;
+    --pkt-fs-sm: 13px;
+  }
+
+  body { background: #fff; }
+
+  .pkt-header {
+    position: relative;
+    min-height: 56px;
+    height: 56px;
+    padding: 0 12px;
+    justify-content: center;
+    box-shadow: none;
+    border-bottom: 1px solid var(--pkt-gray-100);
+  }
+  .pkt-brand { gap: 6px; }
+  .pkt-shield { width: 27px; height: 27px; }
+  .pkt-brand-text { font-size: 18px; letter-spacing: 0.08em; }
+  .pkt-mobile-menu,
+  .pkt-mobile-logout {
+    display: inline-flex;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    background: #fff;
+    color: var(--pkt-ink);
+  }
+  .pkt-mobile-menu {
+    left: 12px;
+    width: 34px;
+    border: none;
+    font-size: 20px;
+  }
+  .pkt-mobile-logout {
+    right: 12px;
+    min-width: 56px;
+    padding: 0 12px;
+    border: 1px solid var(--pkt-red-main);
+    border-radius: 7px;
+    color: var(--pkt-red-main);
+    font-size: 14px;
+  }
+
+  .pkt-main {
+    max-width: none;
+    margin: 0;
+    padding: 0 14px 40px;
+  }
+  .pkt-page-title {
+    margin: 0 -14px 14px;
+    padding: 12px 14px;
+    background: var(--pkt-gray-50);
+    font-size: 18px;
+  }
+  .pkt-panel {
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+  .pkt-tabs {
+    margin-bottom: 10px;
+    border: none;
+  }
+  .pkt-tab {
+    padding: 4px 0 8px;
+    border: none;
+    color: var(--pkt-ink);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .pkt-tab.is-active {
+    color: var(--pkt-ink);
+    border: none;
+  }
+
+  .pkt-complete-notice {
+    margin: 0 0 18px;
+    padding: 10px 12px;
+    color: var(--pkt-ink);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.55;
+  }
+
+  .pkt-table-scroll { overflow: visible; }
+  .pkt-table {
+    display: block;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    border-spacing: 0;
+    font-size: 14px;
+  }
+  .pkt-table thead,
+  .pkt-table tbody { display: block; width: 100%; }
+  .pkt-table thead tr,
+  .pkt-table tbody tr[data-code] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 92px;
+    width: 100%;
+  }
+  .pkt-table thead tr {
+    margin-bottom: 8px;
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .pkt-table thead th {
+    display: block;
+    padding: 9px 10px;
+    background: #f8cdd1;
+    font-size: 13px;
+    text-align: left;
+  }
+  .pkt-table thead th:first-child {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .pkt-table thead th:nth-child(2) { text-align: right; }
+  .pkt-table thead th:nth-child(3),
+  .pkt-table thead th:nth-child(4) { display: none; }
+  .pkt-table thead th:first-child,
+  .pkt-table thead th:last-child { border-radius: 0; }
+
+  .pkt-table tbody tr[data-code] {
+    margin-bottom: 8px;
+    border-radius: 7px;
+    overflow: hidden;
+    background: var(--pkt-gray-50);
+  }
+  .pkt-table tbody tr[data-code].row-pink,
+  .pkt-table tbody tr[data-code].is-selected { background: var(--pkt-member-bg); }
+  .pkt-table tbody tr[data-code] td {
+    display: flex;
+    min-height: 42px;
+    padding: 10px;
+    align-items: center;
+    background: transparent !important;
+    font-size: 14px;
+  }
+  .pkt-table tbody tr[data-code] td:first-child {
+    gap: 9px;
+    border-radius: 0;
+    font-weight: 400;
+  }
+  .pkt-table tbody tr[data-code] td:nth-child(2) {
+    justify-content: flex-end;
+    border-radius: 0;
+  }
+  .pkt-table tbody tr[data-code] td:nth-child(3),
+  .pkt-table tbody tr[data-code] td:nth-child(4) {
+    display: none;
+    grid-column: 1 / -1;
+    grid-template-columns: 86px minmax(0, 1fr);
+    min-height: 48px;
+    padding: 4px 8px;
+    border-top: 1px solid rgba(233, 84, 101, 0.08);
+  }
+  .pkt-table tbody tr[data-code].is-selected td:nth-child(3),
+  .pkt-table tbody tr[data-code].is-selected td:nth-child(4) {
+    display: grid;
+  }
+  .pkt-table tbody tr[data-code] td:nth-child(3)::before {
+    content: "出借張數";
+    padding-left: 2px;
+    font-family: var(--pkt-font-sans);
+    font-weight: 500;
+  }
+  .pkt-table tbody tr[data-code] td:nth-child(4)::before {
+    content: "利率  ⓘ";
+    padding-left: 2px;
+    font-family: var(--pkt-font-sans);
+    font-weight: 500;
+  }
+  .pkt-mobile-select {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+  .pkt-mobile-select input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--pkt-red-main);
+  }
+  .pkt-symbol-label { min-width: 0; }
+
+  .pkt-row-qty,
+  .pkt-row-rate {
+    min-width: 0;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  .pkt-rate-step {
+    min-width: 28px;
+    height: 34px;
+    font-size: 22px;
+  }
+  .pkt-row-qty__input,
+  .pkt-row-rate__input {
+    width: 52px;
+    height: 34px;
+    font-size: 14px;
+  }
+  .pkt-row-unit { font-size: 13px; }
+
+  .pkt-table-empty { display: block; }
+  .pkt-table-empty td { display: block !important; }
+
+  .pkt-submit-wrap { margin: 16px 0 14px; }
+  .pkt-btn-submit {
+    min-width: 112px;
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 7px;
+    font-size: 15px;
+  }
+  .pkt-desktop-label { display: none; }
+  .pkt-mobile-label { display: inline; }
+
+  .pkt-notes {
+    margin-top: 12px;
+    padding-top: 0;
+    border: none;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .pkt-notes h3 { font-size: 14px; margin-bottom: 6px; }
+
+  .float-cs { display: none; }
+
+  .pkt-modal { padding: 12px; }
+  .pkt-modal__dialog {
+    max-width: 360px;
+    border-radius: 7px;
+  }
+  .pkt-modal__body {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px 12px;
+  }
+  .pkt-modal__title {
+    order: 0;
+    margin: 0 -16px 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--pkt-gray-300);
+    font-size: 18px;
+  }
+  .pkt-modal__title .pkt-desktop-label { display: none; }
+  .pkt-modal__title .pkt-mobile-label { display: inline; }
+  .pkt-modal__sub { display: none; }
+  .pkt-submit-summary {
+    order: 1;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+  }
+  .pkt-submit-summary__item {
+    grid-template-columns: 1.15fr 1fr 0.55fr;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 7px;
+    background: var(--pkt-gray-50);
+    font-size: 13px;
+  }
+  .pkt-submit-summary__item span { white-space: nowrap; }
+  .pkt-submit-summary__item:nth-child(odd):not(.pkt-submit-summary__head) {
+    background: var(--pkt-member-bg);
+  }
+  .pkt-submit-summary__head {
+    background: #f8cdd1;
+    font-weight: 600;
+  }
+  .pkt-modal__mobile-warning {
+    display: block;
+    order: 2;
+    margin: 10px 4px 0;
+    color: var(--pkt-red-main);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.55;
+    text-align: center;
+  }
+  .pkt-modal__actions {
+    gap: 12px;
+    padding: 0 22px 16px;
+  }
+  .pkt-modal__btn {
+    height: 40px;
+    font-size: 15px;
+  }
 }
   </style>
 </head>
 <body>
   <header class="pkt-header pkt-header--logo-only">
+    <button type="button" class="pkt-mobile-menu" aria-label="開啟選單">☰</button>
     <a href="#" class="pkt-brand" aria-label="口袋證券">
       <svg class="pkt-shield" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path fill="currentColor" d="M30.64.06c-.18-.03-.51-.08-.88-.05a4.93 4.93 0 0 0-4.7 4.92v10.07c0 .51-.04 1.02-.11 1.52A9.4 9.4 0 0 1 22.55 21.66c-.22.25-.46.5-.77.78a9.7 9.7 0 0 1-1.77 1.3 10.9 10.9 0 0 1-5 1.34h-.1a10.8 10.8 0 0 1-3.82-.79c-.39-.16-.77-.35-1.12-.55a9.6 9.6 0 0 1-1.24-.85 9.6 9.6 0 0 1-1.3-1.23 9.7 9.7 0 0 1-2.51-6.66V8.13a3.2 3.2 0 0 1 3.16-3.21h17.03V3.19A3.2 3.2 0 0 0 21.92 0H6.38C6.05 0 5.74.02 5.42.07A6.4 6.4 0 0 0 .07 5.42 6.4 6.4 0 0 0 0 6.38v8.66c0 3.62 1.29 6.95 3.43 9.54a14.2 14.2 0 0 0 1.99 2 14 14 0 0 0 .92.76c.04.03.08.06.12.08.26.19.53.36.8.52l.16.1c.27.16.55.32.84.47l.13.06a15.2 15.2 0 0 0 7.57 1.42 14.6 14.6 0 0 0 13.74-12.04V2.94S29.89.93 30.65.1c.02-.01.02-.04 0-.05Z"/>
       </svg>
       <span class="pkt-brand-text">口袋證券</span>
     </a>
+    <button type="button" class="pkt-mobile-logout">登出</button>
   </header>
 
   <main class="pkt-main">
@@ -670,75 +1084,140 @@ body.modal-open {
 
       <div class="pkt-tab-panel" id="tab-panel-apply" role="tabpanel" aria-labelledby="tab-btn-apply">
       <div class="pkt-complete-notice" id="complete-notice" hidden>
-        出借申請已完成，若有出借成功，後續將通知您 非常感謝<br />
+        今日出借申請已完成，若有出借成功，後續將通知您，非常感謝！
       </div>
-      <h2 class="pkt-section-label pkt-section-label--result">查詢結果</h2>
+      <div class="pkt-table-scroll">
       <table class="pkt-table" id="lend-table">
         <thead>
           <tr>
-            <th>標的</th>
-            <th>庫存張數</th>
+            <th>
+              <label class="pkt-mobile-select" aria-label="全選股票"><input type="checkbox" class="pkt-mobile-select__input" id="mobile-select-all" /></label>
+              <span class="pkt-desktop-label">標的</span>
+              <span class="pkt-mobile-label">股票名稱</span>
+            </th>
+            <th>可出借張數</th>
             <th>出借張數</th>
-            <th>利率</th>
+            <th>
+              <span class="pkt-th-with-tip" id="rate-tip-wrap">
+                利率
+                <button type="button" class="pkt-tip-btn" id="rate-tip-btn" aria-expanded="false" aria-controls="rate-tip" aria-label="利率說明">!</button>
+                <span class="pkt-tip-bubble" id="rate-tip" role="tooltip">此利率為年利率，實際出借結果依市場供需及成交狀況為準。設定較高利率可能降低成交機率。</span>
+              </span>
+            </th>
           </tr>
         </thead>
         <tbody id="lend-tbody">
           <tr class="row-gray" data-code="2330" data-name="台積電" data-stock="3">
-            <td>2330 台積電</td>
-            <td class="pkt-stock-cell">3</td>
-            <td><select class="pkt-select-qty" data-default="1" aria-label="2330 台積電 出借張數"></select></td>
+            <td>
+              <label class="pkt-mobile-select" aria-label="選擇 2330 台積電"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <span class="pkt-symbol-label">2330 台積電</span>
+            </td>
+            <td class="pkt-stock-cell">3 張</td>
+            <td>
+              <div class="pkt-row-qty" role="group" aria-label="2330 台積電 出借張數" data-default="1">
+                <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="1" aria-label="2330 台積電 出借張數" />
+                <span class="pkt-row-unit">張</span>
+                <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
+              </div>
+            </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2330 台積電 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                <span class="pkt-row-unit">%</span>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
           </tr>
           <tr class="row-pink" data-code="0050" data-name="元大台灣50" data-stock="8">
-            <td>0050 元大台灣50</td>
-            <td class="pkt-stock-cell">8</td>
-            <td><select class="pkt-select-qty" data-default="3" aria-label="0050 元大台灣50 出借張數"></select></td>
+            <td>
+              <label class="pkt-mobile-select" aria-label="選擇 0050 元大台灣50"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <span class="pkt-symbol-label">0050 元大台灣50</span>
+            </td>
+            <td class="pkt-stock-cell">8 張</td>
+            <td>
+              <div class="pkt-row-qty" role="group" aria-label="0050 元大台灣50 出借張數" data-default="3">
+                <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="3" aria-label="0050 元大台灣50 出借張數" />
+                <span class="pkt-row-unit">張</span>
+                <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
+              </div>
+            </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="0050 元大台灣50 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                <span class="pkt-row-unit">%</span>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
           </tr>
           <tr class="row-gray" data-code="2317" data-name="鴻海" data-stock="5">
-            <td>2317 鴻海</td>
-            <td class="pkt-stock-cell">5</td>
-            <td><select class="pkt-select-qty" data-default="2" aria-label="2317 鴻海 出借張數"></select></td>
+            <td>
+              <label class="pkt-mobile-select" aria-label="選擇 2317 鴻海"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <span class="pkt-symbol-label">2317 鴻海</span>
+            </td>
+            <td class="pkt-stock-cell">5 張</td>
+            <td>
+              <div class="pkt-row-qty" role="group" aria-label="2317 鴻海 出借張數" data-default="2">
+                <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="2" aria-label="2317 鴻海 出借張數" />
+                <span class="pkt-row-unit">張</span>
+                <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
+              </div>
+            </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2317 鴻海 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                <span class="pkt-row-unit">%</span>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
           </tr>
           <tr class="row-pink" data-code="2891" data-name="中信金" data-stock="10">
-            <td>2891 中信金</td>
-            <td class="pkt-stock-cell">10</td>
-            <td><select class="pkt-select-qty" data-default="5" aria-label="2891 中信金 出借張數"></select></td>
+            <td>
+              <label class="pkt-mobile-select" aria-label="選擇 2891 中信金"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <span class="pkt-symbol-label">2891 中信金</span>
+            </td>
+            <td class="pkt-stock-cell">10 張</td>
+            <td>
+              <div class="pkt-row-qty" role="group" aria-label="2891 中信金 出借張數" data-default="5">
+                <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="5" aria-label="2891 中信金 出借張數" />
+                <span class="pkt-row-unit">張</span>
+                <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
+              </div>
+            </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2891 中信金 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                <span class="pkt-row-unit">%</span>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
           </tr>
           <tr class="row-gray" data-code="2454" data-name="聯發科" data-stock="2">
-            <td>2454 聯發科</td>
-            <td class="pkt-stock-cell">2</td>
-            <td><select class="pkt-select-qty" data-default="0" aria-label="2454 聯發科 出借張數"></select></td>
+            <td>
+              <label class="pkt-mobile-select" aria-label="選擇 2454 聯發科"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <span class="pkt-symbol-label">2454 聯發科</span>
+            </td>
+            <td class="pkt-stock-cell">2 張</td>
+            <td>
+              <div class="pkt-row-qty" role="group" aria-label="2454 聯發科 出借張數" data-default="0">
+                <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2454 聯發科 出借張數" />
+                <span class="pkt-row-unit">張</span>
+                <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
+              </div>
+            </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2454 聯發科 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <span class="pkt-row-rate__value" aria-live="polite">3%</span>
+                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                <span class="pkt-row-unit">%</span>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
@@ -748,17 +1227,21 @@ body.modal-open {
           </tr>
         </tbody>
       </table>
+      </div>
 
       <div class="pkt-submit-wrap">
-        <button type="button" class="pkt-btn-primary pkt-btn-submit" id="btn-open-confirm">確認送出</button>
+        <button type="button" class="pkt-btn-primary pkt-btn-submit" id="btn-open-confirm">
+          <span class="pkt-desktop-label">下一步：確認出借內容</span>
+          <span class="pkt-mobile-label">下一步</span>
+        </button>
       </div>
 
       <div class="pkt-notes">
         <h3>注意事項：</h3>
         <ul>
-          <li>出借張數請由下拉選單選擇，可選範圍為 0 張至該標的庫存張數，不可超過庫存。</li>
-          <li>借券利率請於各標的列右側以 [−] [+] 調整，預設 3%，可調範圍 1%～7%（每次 1%），調整任一標的會同步套用全部標的。</li>
-          <li>庫存張數為查詢當下可出借參考，實際可出借數量與利率以送出時系統檢核為準。</li>
+          <li>出借張數請以 [−] [+] 調整，或於中間欄位手動輸入整數；可選範圍為 0 張至該標的可出借張數，超出範圍將自動調整為合法值。</li>
+          <li>借券利率請以 [−] [+] 調整，或於中間欄位手動輸入整數；預設 3%，可調範圍 1%～7%（每次 1%），超出範圍將自動調整為合法值；調整任一標的會同步套用全部標的。</li>
+          <li>可出借張數為查詢當下可出借參考，實際可出借數量與利率以送出時系統檢核為準。</li>
         </ul>
       </div>
       </div>
@@ -769,9 +1252,16 @@ body.modal-open {
     <button type="button" class="pkt-modal__backdrop" id="confirm-backdrop" aria-label="關閉"></button>
     <div class="pkt-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
       <div class="pkt-modal__body">
-        <p class="pkt-modal__title" id="confirm-modal-title">您是否確認借券內容</p>
+        <p class="pkt-modal__title" id="confirm-modal-title">
+          <span class="pkt-desktop-label">請確認借券內容</span>
+          <span class="pkt-mobile-label">確認借券內容</span>
+        </p>
         <p class="pkt-modal__sub">送出後不可更改</p>
         <ul class="pkt-submit-summary" id="confirm-summary" aria-label="確認借券明細"></ul>
+        <p class="pkt-modal__mobile-warning">
+          提醒您，送出後即不可修改。<br />
+          出借股票撥回時，股票撥回當日成本將歸 0，送出前請確認股票成本價格。
+        </p>
       </div>
       <div class="pkt-modal__actions">
         <button type="button" class="pkt-modal__btn pkt-modal__btn--cancel" id="confirm-cancel">取消</button>
@@ -804,6 +1294,63 @@ body.modal-open {
   var dataRows = Array.prototype.slice.call(
     tbody.querySelectorAll('tr[data-code]')
   );
+  var mobileSelectAll = document.getElementById('mobile-select-all');
+  var isSubmitted = false;
+
+  function isMobileLayout() {
+    return window.matchMedia('(max-width: 560px)').matches;
+  }
+
+  function isMobileRowSelected(row) {
+    var checkbox = row.querySelector('.pkt-mobile-select__input');
+    return !!(checkbox && checkbox.checked);
+  }
+
+  function syncMobileRowSelection(row) {
+    row.classList.toggle('is-selected', isMobileRowSelected(row) && !isSubmitted);
+  }
+
+  function syncMobileSelectAllState() {
+    if (!mobileSelectAll) return;
+    var availableRows = dataRows.filter(function (row) { return !row.hidden; });
+    var selectedCount = availableRows.filter(isMobileRowSelected).length;
+    mobileSelectAll.checked = availableRows.length > 0 && selectedCount === availableRows.length;
+    mobileSelectAll.indeterminate = selectedCount > 0 && selectedCount < availableRows.length;
+  }
+
+  function initMobileSelections() {
+    dataRows.forEach(function (row) {
+      var checkbox = row.querySelector('.pkt-mobile-select__input');
+      var qtyInput = row.querySelector('.pkt-row-qty__input');
+      if (!checkbox) return;
+      if (isMobileLayout() && qtyInput) {
+        qtyInput.value = '0';
+        updateQtyUI(row);
+      }
+      checkbox.addEventListener('change', function () {
+        if (isSubmitted) {
+          checkbox.checked = false;
+          return;
+        }
+        syncMobileRowSelection(row);
+        syncMobileSelectAllState();
+      });
+      syncMobileRowSelection(row);
+    });
+    if (mobileSelectAll) {
+      mobileSelectAll.addEventListener('change', function () {
+        if (isSubmitted) return;
+        dataRows.forEach(function (row) {
+          if (row.hidden) return;
+          var checkbox = row.querySelector('.pkt-mobile-select__input');
+          if (checkbox) checkbox.checked = mobileSelectAll.checked;
+          syncMobileRowSelection(row);
+        });
+        syncMobileSelectAllState();
+      });
+    }
+    syncMobileSelectAllState();
+  }
 
   function parseStock(row) {
     var raw = row.getAttribute('data-stock');
@@ -813,23 +1360,33 @@ body.modal-open {
     return Math.max(0, parseInt(cell.textContent.replace(/,/g, ''), 10) || 0);
   }
 
-  function buildQtySelect(select, stock) {
-    var preferred = parseInt(select.getAttribute('data-default') || '0', 10);
-    if (isNaN(preferred) || preferred < 0) preferred = 0;
-    if (preferred > stock) preferred = stock;
+  function clampQty(value, stock) {
+    var n = parseInt(value, 10);
+    if (isNaN(n) || n < 0) n = 0;
+    if (n > stock) n = stock;
+    return n;
+  }
 
-    select.innerHTML = '';
-    var frag = document.createDocumentFragment();
-    for (var n = 0; n <= stock; n += 1) {
-      var opt = document.createElement('option');
-      opt.value = String(n);
-      opt.textContent = n.toLocaleString('zh-TW') + ' 張';
-      if (n === preferred) opt.selected = true;
-      frag.appendChild(opt);
-    }
-    select.appendChild(frag);
-    select.value = String(preferred);
-    select.setAttribute('aria-valuemax', String(stock));
+  function getRowQty(row) {
+    var input = row.querySelector('.pkt-row-qty__input');
+    if (!input) return 0;
+    return clampQty(input.value, parseStock(row));
+  }
+
+  function updateQtyUI(row) {
+    var wrap = row.querySelector('.pkt-row-qty');
+    var input = row.querySelector('.pkt-row-qty__input');
+    if (!wrap || !input) return;
+    var stock = parseStock(row);
+    var qty = clampQty(input.value, stock);
+    input.value = String(qty);
+    input.setAttribute('aria-valuemin', '0');
+    input.setAttribute('aria-valuemax', String(stock));
+    var dec = wrap.querySelector('.pkt-row-qty__decrease');
+    var inc = wrap.querySelector('.pkt-row-qty__increase');
+    if (dec) dec.disabled = isSubmitted || qty <= 0;
+    if (inc) inc.disabled = isSubmitted || qty >= stock;
+    input.disabled = isSubmitted;
   }
 
   var RATE_MIN = 1;
@@ -859,15 +1416,23 @@ body.modal-open {
     if (rateInput) rateInput.value = String(rateValue);
     if (rateDecrease) rateDecrease.disabled = rateValue <= RATE_MIN;
     if (rateIncrease) rateIncrease.disabled = rateValue >= RATE_MAX;
-    document.querySelectorAll('.pkt-row-rate__value').forEach(function (node) {
-      node.textContent = formatRateDisplay(rateValue);
+    document.querySelectorAll('.pkt-row-rate__input').forEach(function (node) {
+      node.value = String(rateValue);
+      node.disabled = isSubmitted;
+      node.setAttribute('aria-valuemin', String(RATE_MIN));
+      node.setAttribute('aria-valuemax', String(RATE_MAX));
     });
     document.querySelectorAll('.pkt-row-rate__decrease').forEach(function (btn) {
-      btn.disabled = rateValue <= RATE_MIN;
+      btn.disabled = isSubmitted || rateValue <= RATE_MIN;
     });
     document.querySelectorAll('.pkt-row-rate__increase').forEach(function (btn) {
-      btn.disabled = rateValue >= RATE_MAX;
+      btn.disabled = isSubmitted || rateValue >= RATE_MAX;
     });
+  }
+
+  function commitRateFromInput(raw) {
+    rateValue = clampRate(parseInt(raw, 10));
+    updateRateUI();
   }
 
   function initRateStepper() {
@@ -887,23 +1452,73 @@ body.modal-open {
     }
     document.querySelectorAll('.pkt-row-rate__decrease').forEach(function (btn) {
       btn.addEventListener('click', function () {
+        if (isSubmitted) return;
         rateValue = clampRate(rateValue - RATE_STEP);
         updateRateUI();
       });
     });
     document.querySelectorAll('.pkt-row-rate__increase').forEach(function (btn) {
       btn.addEventListener('click', function () {
+        if (isSubmitted) return;
         rateValue = clampRate(rateValue + RATE_STEP);
         updateRateUI();
       });
     });
+    document.querySelectorAll('.pkt-row-rate__input').forEach(function (input) {
+      input.addEventListener('input', function () {
+        input.value = input.value.replace(/[^\d]/g, '');
+      });
+      input.addEventListener('blur', function () {
+        commitRateFromInput(input.value);
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          commitRateFromInput(input.value);
+          input.blur();
+        }
+      });
+    });
   }
 
-  function initQtySelects() {
+  function initQtySteppers() {
     dataRows.forEach(function (row) {
-      var select = row.querySelector('.pkt-select-qty');
-      if (!select) return;
-      buildQtySelect(select, parseStock(row));
+      var wrap = row.querySelector('.pkt-row-qty');
+      var input = row.querySelector('.pkt-row-qty__input');
+      if (!wrap || !input) return;
+      var preferred = parseInt(wrap.getAttribute('data-default') || input.value || '0', 10);
+      input.value = String(clampQty(preferred, parseStock(row)));
+      updateQtyUI(row);
+
+      var dec = wrap.querySelector('.pkt-row-qty__decrease');
+      var inc = wrap.querySelector('.pkt-row-qty__increase');
+      if (dec) {
+        dec.addEventListener('click', function () {
+          if (isSubmitted) return;
+          input.value = String(clampQty((parseInt(input.value, 10) || 0) - 1, parseStock(row)));
+          updateQtyUI(row);
+        });
+      }
+      if (inc) {
+        inc.addEventListener('click', function () {
+          if (isSubmitted) return;
+          input.value = String(clampQty((parseInt(input.value, 10) || 0) + 1, parseStock(row)));
+          updateQtyUI(row);
+        });
+      }
+      input.addEventListener('input', function () {
+        input.value = input.value.replace(/[^\d]/g, '');
+      });
+      input.addEventListener('blur', function () {
+        updateQtyUI(row);
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          updateQtyUI(row);
+          input.blur();
+        }
+      });
     });
   }
 
@@ -937,6 +1552,7 @@ body.modal-open {
     if (emptyRow) {
       emptyRow.hidden = visible > 0;
     }
+    syncMobileSelectAllState();
   }
 
   if (form) {
@@ -956,11 +1572,17 @@ body.modal-open {
   var completeNotice = document.getElementById('complete-notice');
   var remainingQuotaText = document.getElementById('remaining-quota-text');
   var tabPanelApply = document.getElementById('tab-panel-apply');
-  var isSubmitted = false;
   var toastTimer = null;
 
   function openConfirmModal() {
     if (!confirmModal) return;
+    dataRows.forEach(updateQtyUI);
+    var focusedRate = document.activeElement;
+    if (focusedRate && focusedRate.classList && focusedRate.classList.contains('pkt-row-rate__input')) {
+      commitRateFromInput(focusedRate.value);
+    } else {
+      updateRateUI();
+    }
     renderApplicationSummary(confirmSummary, collectSubmittedItems());
     confirmModal.classList.add('is-open');
     confirmModal.setAttribute('aria-hidden', 'false');
@@ -987,8 +1609,8 @@ body.modal-open {
 
   function collectSubmittedItems() {
     return dataRows.map(function (row) {
-      var select = row.querySelector('.pkt-select-qty');
-      var qty = select ? (parseInt(select.value, 10) || 0) : 0;
+      if (isMobileLayout() && !isMobileRowSelected(row)) return null;
+      var qty = getRowQty(row);
       if (qty <= 0) return null;
       return {
         symbol: (row.getAttribute('data-code') || '') + ' ' + (row.getAttribute('data-name') || ''),
@@ -1001,8 +1623,7 @@ body.modal-open {
   function calculateRemainingQuota() {
     return dataRows.reduce(function (sum, row) {
       var stock = parseStock(row);
-      var select = row.querySelector('.pkt-select-qty');
-      var qty = select ? (parseInt(select.value, 10) || 0) : 0;
+      var qty = getRowQty(row);
       return sum + Math.max(0, stock - qty);
     }, 0);
   }
@@ -1012,7 +1633,7 @@ body.modal-open {
     target.innerHTML = '';
     var head = document.createElement('li');
     head.className = 'pkt-submit-summary__item pkt-submit-summary__head';
-    head.innerHTML = '<span>出借標的</span><span>張數</span><span>利率</span>';
+    head.innerHTML = '<span>' + (isMobileLayout() ? '股票名稱' : '出借標的') + '</span><span>出借張數</span><span>利率</span>';
     target.appendChild(head);
     if (!items.length) {
       var empty = document.createElement('li');
@@ -1037,12 +1658,21 @@ body.modal-open {
       remainingQuotaText.textContent = '目前的額度剩餘：' + calculateRemainingQuota().toLocaleString('zh-TW') + ' 張';
     }
     if (btnOpenConfirm) btnOpenConfirm.disabled = true;
-    document.querySelectorAll('#lend-tbody .pkt-select-qty').forEach(function (select) {
-      select.disabled = true;
+    if (mobileSelectAll) {
+      mobileSelectAll.checked = false;
+      mobileSelectAll.indeterminate = false;
+      mobileSelectAll.disabled = true;
+    }
+    dataRows.forEach(function (row) {
+      var checkbox = row.querySelector('.pkt-mobile-select__input');
+      if (checkbox) {
+        checkbox.checked = false;
+        checkbox.disabled = true;
+      }
+      row.classList.remove('is-selected');
+      updateQtyUI(row);
     });
-    document.querySelectorAll('.pkt-row-rate__decrease, .pkt-row-rate__increase').forEach(function (btn) {
-      btn.disabled = true;
-    });
+    updateRateUI();
   }
 
   if (btnOpenConfirm) {
@@ -1287,9 +1917,7 @@ body.modal-open {
     var added = false;
     dataRows.forEach(function (row) {
       if (row.hidden) return;
-      var select = row.querySelector('.pkt-select-qty');
-      if (!select) return;
-      var qty = parseInt(select.value, 10) || 0;
+      var qty = getRowQty(row);
       if (qty <= 0) return;
       var code = row.getAttribute('data-code') || '';
       var name = row.getAttribute('data-name') || '';
@@ -1355,8 +1983,76 @@ body.modal-open {
     }
   });
 
+  function initRateTip() {
+    var wrap = document.getElementById('rate-tip-wrap');
+    var btn = document.getElementById('rate-tip-btn');
+    var bubble = document.getElementById('rate-tip');
+    if (!wrap || !btn || !bubble) return;
+
+    function placeBubble() {
+      var rect = btn.getBoundingClientRect();
+      var gap = 10;
+      var width = Math.min(280, window.innerWidth - 24);
+      var left = rect.left;
+      if (left + width > window.innerWidth - 12) {
+        left = Math.max(12, window.innerWidth - width - 12);
+      }
+      bubble.style.width = width + 'px';
+      bubble.style.top = Math.round(rect.bottom + gap) + 'px';
+      bubble.style.left = Math.round(left) + 'px';
+      bubble.style.setProperty('--tip-arrow-left', Math.max(12, Math.round(rect.left + rect.width / 2 - left - 5)) + 'px');
+    }
+
+    function setOpen(open) {
+      wrap.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) placeBubble();
+    }
+
+    function setHover(on) {
+      wrap.classList.toggle('is-hover', on);
+      if (on) placeBubble();
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(!wrap.classList.contains('is-open'));
+    });
+
+    wrap.addEventListener('mouseenter', function () {
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        setHover(true);
+      }
+    });
+    wrap.addEventListener('mouseleave', function () {
+      setHover(false);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!wrap.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setOpen(false);
+    });
+
+    window.addEventListener('resize', function () {
+      if (wrap.classList.contains('is-open') || wrap.classList.contains('is-hover')) {
+        placeBubble();
+      }
+    });
+    window.addEventListener('scroll', function () {
+      if (wrap.classList.contains('is-open') || wrap.classList.contains('is-hover')) {
+        placeBubble();
+      }
+    }, true);
+  }
+
   initRateStepper();
-  initQtySelects();
+  initQtySteppers();
+  initMobileSelections();
+  initRateTip();
   applyFilter();
   renderDailyRecords();
 })();

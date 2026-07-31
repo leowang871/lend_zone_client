@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>口袋證券 · 借券專區</title>
+  <title>口袋證券 · 券差出借</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
 :root {
@@ -300,9 +300,40 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: var(--pkt-r-lg) 0 0 var(--pkt-r-lg);
   font-weight: 500;
   font-family: var(--pkt-font-sans);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  text-align: left;
+}
+.pkt-table thead th:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  text-align: left;
 }
 .pkt-table tbody tr td:last-child { border-radius: 0 var(--pkt-r-lg) var(--pkt-r-lg) 0; }
 .pkt-table tbody tr[hidden] { display: none; }
+
+.pkt-row-select {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+.pkt-row-select input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--pkt-red-main);
+  cursor: pointer;
+}
+.pkt-symbol-label { min-width: 0; }
+
+.pkt-table tbody tr[data-code]:not(.is-selected) .pkt-row-qty,
+.pkt-table tbody tr[data-code]:not(.is-selected) .pkt-row-rate {
+  opacity: 0.4;
+}
 .pkt-table-empty td {
   padding: 32px 12px !important;
   color: var(--pkt-gray-500);
@@ -324,16 +355,17 @@ button { font-family: inherit; cursor: pointer; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   padding: 0;
   border: 1.5px solid var(--pkt-gray-500);
   border-radius: 50%;
   background: var(--pkt-white);
   color: var(--pkt-gray-700);
   font-family: var(--pkt-font-latin);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
+  font-style: italic;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
@@ -477,37 +509,50 @@ button { font-family: inherit; cursor: pointer; }
 .pkt-application-locked .pkt-row-qty__input,
 .pkt-application-locked .pkt-row-rate__input,
 .pkt-application-locked .pkt-rate-step,
-.pkt-application-locked .pkt-btn-submit {
+.pkt-application-locked .pkt-btn-submit,
+.pkt-application-locked .pkt-row-select input {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
 .pkt-submit-summary {
-  margin: 16px 0 0;
+  order: 1;
+  margin: 0;
   padding: 0;
   list-style: none;
-  border: 1px solid var(--pkt-gray-100);
-  border-radius: var(--pkt-r-lg);
-  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
   text-align: left;
 }
 
 .pkt-submit-summary__item {
   display: grid;
-  grid-template-columns: 1.4fr 0.8fr 0.8fr;
-  gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--pkt-gray-100);
-  font-size: var(--pkt-fs-sm);
+  grid-template-columns: 1.35fr 0.9fr 0.55fr;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 7px;
+  background: var(--pkt-gray-50);
+  font-size: 14px;
 }
 
 .pkt-submit-summary__item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.pkt-submit-summary__item:nth-child(odd):not(.pkt-submit-summary__head) {
+  background: var(--pkt-member-bg);
 }
 
 .pkt-submit-summary__head {
-  background: var(--pkt-member-bg);
+  background: #f8cdd1;
   font-weight: 600;
+}
+
+.pkt-submit-summary__item span {
+  white-space: nowrap;
 }
 
 .pkt-notes {
@@ -593,14 +638,16 @@ button { font-family: inherit; cursor: pointer; }
 .pkt-modal__dialog {
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
   background: var(--pkt-white);
-  border-radius: var(--pkt-r-xl);
+  border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   overflow: hidden;
 }
 .pkt-modal__body {
-  padding: 40px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 18px 14px;
   text-align: center;
 }
 .pkt-modal__body--form {
@@ -652,29 +699,39 @@ button { font-family: inherit; cursor: pointer; }
   line-height: 1.5;
 }
 .pkt-modal__title {
-  margin: 0 0 12px;
-  font-size: 22px;
+  order: 0;
+  margin: 0 -18px 12px;
+  padding: 14px 18px;
+  background: #f8cdd1;
+  font-size: 18px;
   font-weight: 700;
   color: var(--pkt-ink);
   line-height: 1.5;
+  text-align: left;
 }
 .pkt-modal__sub {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
+  display: none;
+}
+.pkt-modal__warning {
+  order: 2;
+  display: block;
+  margin: 14px 4px 0;
   color: var(--pkt-red-main);
-  line-height: 1.5;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  text-align: center;
 }
 .pkt-modal__actions {
   display: flex;
   gap: 12px;
-  padding: 0 32px 32px;
+  padding: 4px 22px 18px;
 }
 .pkt-modal__btn {
   flex: 1;
-  height: 44px;
-  border-radius: var(--pkt-r-md);
-  font-size: var(--pkt-fs-body);
+  height: 42px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -751,9 +808,7 @@ body.modal-open {
 
 .pkt-mobile-menu,
 .pkt-mobile-logout,
-.pkt-mobile-select,
-.pkt-mobile-label,
-.pkt-modal__mobile-warning {
+.pkt-mobile-label {
   display: none;
 }
 
@@ -942,11 +997,11 @@ body.modal-open {
     font-family: var(--pkt-font-sans);
     font-weight: 500;
   }
-  .pkt-mobile-select {
+  .pkt-row-select {
     display: inline-flex;
     flex: 0 0 auto;
   }
-  .pkt-mobile-select input {
+  .pkt-row-select input {
     width: 16px;
     height: 16px;
     margin: 0;
@@ -1004,57 +1059,25 @@ body.modal-open {
     border-radius: 7px;
   }
   .pkt-modal__body {
-    display: flex;
-    flex-direction: column;
     padding: 0 16px 12px;
   }
   .pkt-modal__title {
-    order: 0;
     margin: 0 -16px 10px;
     padding: 14px 16px;
-    border-bottom: 1px solid var(--pkt-gray-300);
-    font-size: 18px;
-  }
-  .pkt-modal__title .pkt-desktop-label { display: none; }
-  .pkt-modal__title .pkt-mobile-label { display: inline; }
-  .pkt-modal__sub { display: none; }
-  .pkt-submit-summary {
-    order: 1;
-    margin: 0;
-    border: none;
-    border-radius: 0;
+    font-size: 17px;
   }
   .pkt-submit-summary__item {
     grid-template-columns: 1.15fr 1fr 0.55fr;
-    gap: 8px;
-    margin-bottom: 8px;
     padding: 12px 10px;
-    border: none;
-    border-radius: 7px;
-    background: var(--pkt-gray-50);
     font-size: 13px;
   }
-  .pkt-submit-summary__item span { white-space: nowrap; }
-  .pkt-submit-summary__item:nth-child(odd):not(.pkt-submit-summary__head) {
-    background: var(--pkt-member-bg);
-  }
-  .pkt-submit-summary__head {
-    background: #f8cdd1;
-    font-weight: 600;
-  }
-  .pkt-modal__mobile-warning {
-    display: block;
-    order: 2;
+  .pkt-modal__warning {
     margin: 10px 4px 0;
-    color: var(--pkt-red-main);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.55;
-    text-align: center;
+    font-size: 13px;
   }
   .pkt-modal__actions {
     gap: 12px;
-    padding: 0 22px 16px;
+    padding: 0 16px 16px;
   }
   .pkt-modal__btn {
     height: 40px;
@@ -1076,32 +1099,31 @@ body.modal-open {
   </header>
 
   <main class="pkt-main">
-    <h1 class="pkt-page-title">借券專區</h1>
+    <h1 class="pkt-page-title">券差出借</h1>
     <div class="pkt-panel">
-      <div class="pkt-tabs" role="tablist" aria-label="借券專區功能">
-        <button type="button" class="pkt-tab is-active" role="tab" id="tab-btn-apply" aria-selected="true" aria-controls="tab-panel-apply">出借申請</button>
+      <div class="pkt-tabs" role="tablist" aria-label="券差出借功能">
+        <button type="button" class="pkt-tab is-active" role="tab" id="tab-btn-apply" aria-selected="true" aria-controls="tab-panel-apply">券差出借申請</button>
       </div>
 
       <div class="pkt-tab-panel" id="tab-panel-apply" role="tabpanel" aria-labelledby="tab-btn-apply">
       <div class="pkt-complete-notice" id="complete-notice" hidden>
-        今日出借申請已完成，若有出借成功，後續將通知您，非常感謝！
+        今日券差出借申請已完成，若有券差出借成功，後續將通知您，非常感謝！
       </div>
       <div class="pkt-table-scroll">
       <table class="pkt-table" id="lend-table">
         <thead>
           <tr>
             <th>
-              <label class="pkt-mobile-select" aria-label="全選股票"><input type="checkbox" class="pkt-mobile-select__input" id="mobile-select-all" /></label>
-              <span class="pkt-desktop-label">標的</span>
-              <span class="pkt-mobile-label">股票名稱</span>
+              <label class="pkt-row-select" aria-label="全選股票"><input type="checkbox" class="pkt-row-select__input" id="row-select-all" /></label>
+              <span>股票名稱</span>
             </th>
             <th>可出借張數</th>
             <th>出借張數</th>
             <th>
               <span class="pkt-th-with-tip" id="rate-tip-wrap">
                 利率
-                <button type="button" class="pkt-tip-btn" id="rate-tip-btn" aria-expanded="false" aria-controls="rate-tip" aria-label="利率說明">!</button>
-                <span class="pkt-tip-bubble" id="rate-tip" role="tooltip">此利率為年利率，實際出借結果依市場供需及成交狀況為準。設定較高利率可能降低成交機率。</span>
+                <button type="button" class="pkt-tip-btn" id="rate-tip-btn" aria-expanded="false" aria-controls="rate-tip" aria-label="利率說明">i</button>
+                <span class="pkt-tip-bubble" id="rate-tip" role="tooltip">此利率為年利率，實際券差出借結果依市場供需及成交狀況為準。設定較高利率可能降低成交機率。</span>
               </span>
             </th>
           </tr>
@@ -1109,14 +1131,14 @@ body.modal-open {
         <tbody id="lend-tbody">
           <tr class="row-gray" data-code="2330" data-name="台積電" data-stock="3">
             <td>
-              <label class="pkt-mobile-select" aria-label="選擇 2330 台積電"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <label class="pkt-row-select" aria-label="選擇 2330 台積電"><input type="checkbox" class="pkt-row-select__input" /></label>
               <span class="pkt-symbol-label">2330 台積電</span>
             </td>
             <td class="pkt-stock-cell">3 張</td>
             <td>
-              <div class="pkt-row-qty" role="group" aria-label="2330 台積電 出借張數" data-default="1">
+              <div class="pkt-row-qty" role="group" aria-label="2330 台積電 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="1" aria-label="2330 台積電 出借張數" />
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2330 台積電 出借張數" />
                 <span class="pkt-row-unit">張</span>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
@@ -1132,14 +1154,14 @@ body.modal-open {
           </tr>
           <tr class="row-pink" data-code="0050" data-name="元大台灣50" data-stock="8">
             <td>
-              <label class="pkt-mobile-select" aria-label="選擇 0050 元大台灣50"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <label class="pkt-row-select" aria-label="選擇 0050 元大台灣50"><input type="checkbox" class="pkt-row-select__input" /></label>
               <span class="pkt-symbol-label">0050 元大台灣50</span>
             </td>
             <td class="pkt-stock-cell">8 張</td>
             <td>
-              <div class="pkt-row-qty" role="group" aria-label="0050 元大台灣50 出借張數" data-default="3">
+              <div class="pkt-row-qty" role="group" aria-label="0050 元大台灣50 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="3" aria-label="0050 元大台灣50 出借張數" />
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="0050 元大台灣50 出借張數" />
                 <span class="pkt-row-unit">張</span>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
@@ -1155,14 +1177,14 @@ body.modal-open {
           </tr>
           <tr class="row-gray" data-code="2317" data-name="鴻海" data-stock="5">
             <td>
-              <label class="pkt-mobile-select" aria-label="選擇 2317 鴻海"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <label class="pkt-row-select" aria-label="選擇 2317 鴻海"><input type="checkbox" class="pkt-row-select__input" /></label>
               <span class="pkt-symbol-label">2317 鴻海</span>
             </td>
             <td class="pkt-stock-cell">5 張</td>
             <td>
-              <div class="pkt-row-qty" role="group" aria-label="2317 鴻海 出借張數" data-default="2">
+              <div class="pkt-row-qty" role="group" aria-label="2317 鴻海 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="2" aria-label="2317 鴻海 出借張數" />
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2317 鴻海 出借張數" />
                 <span class="pkt-row-unit">張</span>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
@@ -1178,14 +1200,14 @@ body.modal-open {
           </tr>
           <tr class="row-pink" data-code="2891" data-name="中信金" data-stock="10">
             <td>
-              <label class="pkt-mobile-select" aria-label="選擇 2891 中信金"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <label class="pkt-row-select" aria-label="選擇 2891 中信金"><input type="checkbox" class="pkt-row-select__input" /></label>
               <span class="pkt-symbol-label">2891 中信金</span>
             </td>
             <td class="pkt-stock-cell">10 張</td>
             <td>
-              <div class="pkt-row-qty" role="group" aria-label="2891 中信金 出借張數" data-default="5">
+              <div class="pkt-row-qty" role="group" aria-label="2891 中信金 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="5" aria-label="2891 中信金 出借張數" />
+                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2891 中信金 出借張數" />
                 <span class="pkt-row-unit">張</span>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
@@ -1201,7 +1223,7 @@ body.modal-open {
           </tr>
           <tr class="row-gray" data-code="2454" data-name="聯發科" data-stock="2">
             <td>
-              <label class="pkt-mobile-select" aria-label="選擇 2454 聯發科"><input type="checkbox" class="pkt-mobile-select__input" /></label>
+              <label class="pkt-row-select" aria-label="選擇 2454 聯發科"><input type="checkbox" class="pkt-row-select__input" /></label>
               <span class="pkt-symbol-label">2454 聯發科</span>
             </td>
             <td class="pkt-stock-cell">2 張</td>
@@ -1231,7 +1253,7 @@ body.modal-open {
 
       <div class="pkt-submit-wrap">
         <button type="button" class="pkt-btn-primary pkt-btn-submit" id="btn-open-confirm">
-          <span class="pkt-desktop-label">下一步：確認出借內容</span>
+          <span class="pkt-desktop-label">下一步</span>
           <span class="pkt-mobile-label">下一步</span>
         </button>
       </div>
@@ -1239,9 +1261,9 @@ body.modal-open {
       <div class="pkt-notes">
         <h3>注意事項：</h3>
         <ul>
-          <li>出借張數請以 [−] [+] 調整，或於中間欄位手動輸入整數；可選範圍為 0 張至該標的可出借張數，超出範圍將自動調整為合法值。</li>
-          <li>借券利率請以 [−] [+] 調整，或於中間欄位手動輸入整數；預設 3%，可調範圍 1%～7%（每次 1%），超出範圍將自動調整為合法值；調整任一標的會同步套用全部標的。</li>
-          <li>可出借張數為查詢當下可出借參考，實際可出借數量與利率以送出時系統檢核為準。</li>
+          <li>券差出借張數請以「[-]」「[+]」調整，或於中間欄位手動輸入整數；可選範圍為 0 張至該標的可券差出借張數，超出範圍將自動調整為合法值。</li>
+          <li>券差出借利率請以「[-]」「[+]」調整，或於中間欄位手動輸入整數，預設 3%，可調範圍 1%～7%（每次 1%），超出範圍將自動調整為合法值；調整任一標的會同步套用全部標的。</li>
+          <li>可券差出借張數為查詢當下可出借參考，實際可券差出借數量與利率以送出時系統檢核為準。</li>
         </ul>
       </div>
       </div>
@@ -1252,15 +1274,11 @@ body.modal-open {
     <button type="button" class="pkt-modal__backdrop" id="confirm-backdrop" aria-label="關閉"></button>
     <div class="pkt-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
       <div class="pkt-modal__body">
-        <p class="pkt-modal__title" id="confirm-modal-title">
-          <span class="pkt-desktop-label">請確認借券內容</span>
-          <span class="pkt-mobile-label">確認借券內容</span>
-        </p>
-        <p class="pkt-modal__sub">送出後不可更改</p>
-        <ul class="pkt-submit-summary" id="confirm-summary" aria-label="確認借券明細"></ul>
-        <p class="pkt-modal__mobile-warning">
+        <p class="pkt-modal__title" id="confirm-modal-title">確認券差借券內容</p>
+        <ul class="pkt-submit-summary" id="confirm-summary" aria-label="確認券差借券明細"></ul>
+        <p class="pkt-modal__warning">
           提醒您，送出後即不可修改。<br />
-          出借股票撥回時，股票撥回當日成本將歸 0，送出前請確認股票成本價格。
+          券差出借股票後，股票撥回時買進成本將歸0，送出前請確認股票成本價格。
         </p>
       </div>
       <div class="pkt-modal__actions">
@@ -1270,7 +1288,7 @@ body.modal-open {
     </div>
   </div>
 
-  <div class="pkt-toast" id="submit-toast" role="status" aria-live="polite">借券申請已送出</div>
+  <div class="pkt-toast" id="submit-toast" role="status" aria-live="polite">券差出借申請已送出</div>
 
   <a href="#" class="float-cs" aria-label="智能客服">
     <span class="float-cs__btn" aria-hidden="true">
@@ -1294,62 +1312,68 @@ body.modal-open {
   var dataRows = Array.prototype.slice.call(
     tbody.querySelectorAll('tr[data-code]')
   );
-  var mobileSelectAll = document.getElementById('mobile-select-all');
+  var rowSelectAll = document.getElementById('row-select-all');
   var isSubmitted = false;
 
   function isMobileLayout() {
     return window.matchMedia('(max-width: 560px)').matches;
   }
 
-  function isMobileRowSelected(row) {
-    var checkbox = row.querySelector('.pkt-mobile-select__input');
+  function getRowCheckbox(row) {
+    return row.querySelector('.pkt-row-select__input');
+  }
+
+  function isRowSelected(row) {
+    var checkbox = getRowCheckbox(row);
     return !!(checkbox && checkbox.checked);
   }
 
-  function syncMobileRowSelection(row) {
-    row.classList.toggle('is-selected', isMobileRowSelected(row) && !isSubmitted);
+  function syncRowSelection(row) {
+    var selected = isRowSelected(row) && !isSubmitted;
+    row.classList.toggle('is-selected', selected);
+    updateQtyUI(row);
+    updateRateUIForRow(row);
   }
 
-  function syncMobileSelectAllState() {
-    if (!mobileSelectAll) return;
+  function syncSelectAllState() {
+    if (!rowSelectAll) return;
     var availableRows = dataRows.filter(function (row) { return !row.hidden; });
-    var selectedCount = availableRows.filter(isMobileRowSelected).length;
-    mobileSelectAll.checked = availableRows.length > 0 && selectedCount === availableRows.length;
-    mobileSelectAll.indeterminate = selectedCount > 0 && selectedCount < availableRows.length;
+    var selectedCount = availableRows.filter(isRowSelected).length;
+    rowSelectAll.checked = availableRows.length > 0 && selectedCount === availableRows.length;
+    rowSelectAll.indeterminate = selectedCount > 0 && selectedCount < availableRows.length;
   }
 
-  function initMobileSelections() {
+  function initRowSelections() {
     dataRows.forEach(function (row) {
-      var checkbox = row.querySelector('.pkt-mobile-select__input');
+      var checkbox = getRowCheckbox(row);
       var qtyInput = row.querySelector('.pkt-row-qty__input');
       if (!checkbox) return;
-      if (isMobileLayout() && qtyInput) {
+      if (qtyInput) {
         qtyInput.value = '0';
-        updateQtyUI(row);
       }
       checkbox.addEventListener('change', function () {
         if (isSubmitted) {
           checkbox.checked = false;
           return;
         }
-        syncMobileRowSelection(row);
-        syncMobileSelectAllState();
+        syncRowSelection(row);
+        syncSelectAllState();
       });
-      syncMobileRowSelection(row);
+      syncRowSelection(row);
     });
-    if (mobileSelectAll) {
-      mobileSelectAll.addEventListener('change', function () {
+    if (rowSelectAll) {
+      rowSelectAll.addEventListener('change', function () {
         if (isSubmitted) return;
         dataRows.forEach(function (row) {
           if (row.hidden) return;
-          var checkbox = row.querySelector('.pkt-mobile-select__input');
-          if (checkbox) checkbox.checked = mobileSelectAll.checked;
-          syncMobileRowSelection(row);
+          var checkbox = getRowCheckbox(row);
+          if (checkbox) checkbox.checked = rowSelectAll.checked;
+          syncRowSelection(row);
         });
-        syncMobileSelectAllState();
+        syncSelectAllState();
       });
     }
-    syncMobileSelectAllState();
+    syncSelectAllState();
   }
 
   function parseStock(row) {
@@ -1379,14 +1403,15 @@ body.modal-open {
     if (!wrap || !input) return;
     var stock = parseStock(row);
     var qty = clampQty(input.value, stock);
+    var canEdit = isRowSelected(row) && !isSubmitted;
     input.value = String(qty);
     input.setAttribute('aria-valuemin', '0');
     input.setAttribute('aria-valuemax', String(stock));
     var dec = wrap.querySelector('.pkt-row-qty__decrease');
     var inc = wrap.querySelector('.pkt-row-qty__increase');
-    if (dec) dec.disabled = isSubmitted || qty <= 0;
-    if (inc) inc.disabled = isSubmitted || qty >= stock;
-    input.disabled = isSubmitted;
+    if (dec) dec.disabled = !canEdit || qty <= 0;
+    if (inc) inc.disabled = !canEdit || qty >= stock;
+    input.disabled = !canEdit;
   }
 
   var RATE_MIN = 1;
@@ -1407,7 +1432,22 @@ body.modal-open {
   }
 
   function formatRateDisplay(value) {
-    return clampRate(value) + '%';
+    return clampRate(value) + ' %';
+  }
+
+  function updateRateUIForRow(row) {
+    var canEdit = isRowSelected(row) && !isSubmitted;
+    var input = row.querySelector('.pkt-row-rate__input');
+    if (input) {
+      input.value = String(rateValue);
+      input.disabled = !canEdit;
+      input.setAttribute('aria-valuemin', String(RATE_MIN));
+      input.setAttribute('aria-valuemax', String(RATE_MAX));
+    }
+    var dec = row.querySelector('.pkt-row-rate__decrease');
+    var inc = row.querySelector('.pkt-row-rate__increase');
+    if (dec) dec.disabled = !canEdit || rateValue <= RATE_MIN;
+    if (inc) inc.disabled = !canEdit || rateValue >= RATE_MAX;
   }
 
   function updateRateUI() {
@@ -1416,18 +1456,7 @@ body.modal-open {
     if (rateInput) rateInput.value = String(rateValue);
     if (rateDecrease) rateDecrease.disabled = rateValue <= RATE_MIN;
     if (rateIncrease) rateIncrease.disabled = rateValue >= RATE_MAX;
-    document.querySelectorAll('.pkt-row-rate__input').forEach(function (node) {
-      node.value = String(rateValue);
-      node.disabled = isSubmitted;
-      node.setAttribute('aria-valuemin', String(RATE_MIN));
-      node.setAttribute('aria-valuemax', String(RATE_MAX));
-    });
-    document.querySelectorAll('.pkt-row-rate__decrease').forEach(function (btn) {
-      btn.disabled = isSubmitted || rateValue <= RATE_MIN;
-    });
-    document.querySelectorAll('.pkt-row-rate__increase').forEach(function (btn) {
-      btn.disabled = isSubmitted || rateValue >= RATE_MAX;
-    });
+    dataRows.forEach(updateRateUIForRow);
   }
 
   function commitRateFromInput(raw) {
@@ -1453,6 +1482,8 @@ body.modal-open {
     document.querySelectorAll('.pkt-row-rate__decrease').forEach(function (btn) {
       btn.addEventListener('click', function () {
         if (isSubmitted) return;
+        var row = btn.closest('tr[data-code]');
+        if (row && !isRowSelected(row)) return;
         rateValue = clampRate(rateValue - RATE_STEP);
         updateRateUI();
       });
@@ -1460,6 +1491,8 @@ body.modal-open {
     document.querySelectorAll('.pkt-row-rate__increase').forEach(function (btn) {
       btn.addEventListener('click', function () {
         if (isSubmitted) return;
+        var row = btn.closest('tr[data-code]');
+        if (row && !isRowSelected(row)) return;
         rateValue = clampRate(rateValue + RATE_STEP);
         updateRateUI();
       });
@@ -1469,11 +1502,18 @@ body.modal-open {
         input.value = input.value.replace(/[^\d]/g, '');
       });
       input.addEventListener('blur', function () {
+        var row = input.closest('tr[data-code]');
+        if (row && !isRowSelected(row)) {
+          input.value = String(rateValue);
+          return;
+        }
         commitRateFromInput(input.value);
       });
       input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
           e.preventDefault();
+          var row = input.closest('tr[data-code]');
+          if (row && !isRowSelected(row)) return;
           commitRateFromInput(input.value);
           input.blur();
         }
@@ -1486,22 +1526,21 @@ body.modal-open {
       var wrap = row.querySelector('.pkt-row-qty');
       var input = row.querySelector('.pkt-row-qty__input');
       if (!wrap || !input) return;
-      var preferred = parseInt(wrap.getAttribute('data-default') || input.value || '0', 10);
-      input.value = String(clampQty(preferred, parseStock(row)));
+      input.value = '0';
       updateQtyUI(row);
 
       var dec = wrap.querySelector('.pkt-row-qty__decrease');
       var inc = wrap.querySelector('.pkt-row-qty__increase');
       if (dec) {
         dec.addEventListener('click', function () {
-          if (isSubmitted) return;
+          if (isSubmitted || !isRowSelected(row)) return;
           input.value = String(clampQty((parseInt(input.value, 10) || 0) - 1, parseStock(row)));
           updateQtyUI(row);
         });
       }
       if (inc) {
         inc.addEventListener('click', function () {
-          if (isSubmitted) return;
+          if (isSubmitted || !isRowSelected(row)) return;
           input.value = String(clampQty((parseInt(input.value, 10) || 0) + 1, parseStock(row)));
           updateQtyUI(row);
         });
@@ -1552,7 +1591,7 @@ body.modal-open {
     if (emptyRow) {
       emptyRow.hidden = visible > 0;
     }
-    syncMobileSelectAllState();
+    syncSelectAllState();
   }
 
   if (form) {
@@ -1609,7 +1648,7 @@ body.modal-open {
 
   function collectSubmittedItems() {
     return dataRows.map(function (row) {
-      if (isMobileLayout() && !isMobileRowSelected(row)) return null;
+      if (!isRowSelected(row)) return null;
       var qty = getRowQty(row);
       if (qty <= 0) return null;
       return {
@@ -1633,12 +1672,12 @@ body.modal-open {
     target.innerHTML = '';
     var head = document.createElement('li');
     head.className = 'pkt-submit-summary__item pkt-submit-summary__head';
-    head.innerHTML = '<span>' + (isMobileLayout() ? '股票名稱' : '出借標的') + '</span><span>出借張數</span><span>利率</span>';
+    head.innerHTML = '<span>股票名稱</span><span>出借張數</span><span>利率</span>';
     target.appendChild(head);
     if (!items.length) {
       var empty = document.createElement('li');
       empty.className = 'pkt-submit-summary__item';
-      empty.innerHTML = '<span>未選擇出借標的</span><span>0 張</span><span>' + formatRateDisplay(rateValue) + '</span>';
+      empty.innerHTML = '<span>未選擇券差出借標的</span><span>0 張</span><span>' + formatRateDisplay(rateValue) + '</span>';
       target.appendChild(empty);
       return;
     }
@@ -1658,19 +1697,20 @@ body.modal-open {
       remainingQuotaText.textContent = '目前的額度剩餘：' + calculateRemainingQuota().toLocaleString('zh-TW') + ' 張';
     }
     if (btnOpenConfirm) btnOpenConfirm.disabled = true;
-    if (mobileSelectAll) {
-      mobileSelectAll.checked = false;
-      mobileSelectAll.indeterminate = false;
-      mobileSelectAll.disabled = true;
+    if (rowSelectAll) {
+      rowSelectAll.checked = false;
+      rowSelectAll.indeterminate = false;
+      rowSelectAll.disabled = true;
     }
     dataRows.forEach(function (row) {
-      var checkbox = row.querySelector('.pkt-mobile-select__input');
+      var checkbox = getRowCheckbox(row);
       if (checkbox) {
         checkbox.checked = false;
         checkbox.disabled = true;
       }
       row.classList.remove('is-selected');
       updateQtyUI(row);
+      updateRateUIForRow(row);
     });
     updateRateUI();
   }
@@ -1916,7 +1956,7 @@ body.modal-open {
     var now = formatDateTimeNow();
     var added = false;
     dataRows.forEach(function (row) {
-      if (row.hidden) return;
+      if (row.hidden || !isRowSelected(row)) return;
       var qty = getRowQty(row);
       if (qty <= 0) return;
       var code = row.getAttribute('data-code') || '';
@@ -2051,7 +2091,7 @@ body.modal-open {
 
   initRateStepper();
   initQtySteppers();
-  initMobileSelections();
+  initRowSelections();
   initRateTip();
   applyFilter();
   renderDailyRecords();

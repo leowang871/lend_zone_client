@@ -421,45 +421,7 @@ button { font-family: inherit; cursor: pointer; }
   display: block;
 }
 
-.pkt-row-qty {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 168px;
-}
-
-.pkt-row-qty__input {
-  width: 48px;
-  height: 36px;
-  padding: 0 4px;
-  border: 1px solid var(--pkt-gray-300);
-  border-radius: var(--pkt-r-md);
-  font-family: var(--pkt-font-latin);
-  font-size: var(--pkt-fs-body);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--pkt-ink);
-  text-align: center;
-  background: var(--pkt-white);
-  box-sizing: border-box;
-}
-
-.pkt-row-qty__input:focus {
-  outline: none;
-  border-color: var(--pkt-red-main);
-  box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
-}
-
-.pkt-row-unit {
-  min-width: 1.25em;
-  font-family: var(--pkt-font-sans);
-  font-size: var(--pkt-fs-sm);
-  font-weight: 500;
-  color: var(--pkt-gray-700);
-  line-height: 1;
-}
-
+.pkt-row-qty,
 .pkt-row-rate {
   display: inline-flex;
   align-items: center;
@@ -468,26 +430,62 @@ button { font-family: inherit; cursor: pointer; }
   min-width: 156px;
 }
 
-.pkt-row-rate__input {
-  width: 48px;
+.pkt-row-field {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 88px;
+  min-width: 88px;
   height: 36px;
-  padding: 0 4px;
+  padding: 0 12px;
   border: 1px solid var(--pkt-gray-300);
-  border-radius: var(--pkt-r-md);
+  border-radius: 10px;
+  background: var(--pkt-white);
+}
+
+.pkt-row-qty__input,
+.pkt-row-rate__input {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
   font-family: var(--pkt-font-latin);
   font-size: var(--pkt-fs-body);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--pkt-ink);
-  text-align: center;
-  background: var(--pkt-white);
-  box-sizing: border-box;
+  text-align: left;
+  background: transparent;
+  outline: none;
+  -moz-appearance: textfield;
 }
 
-.pkt-row-rate__input:focus {
-  outline: none;
+.pkt-row-qty__input::-webkit-outer-spin-button,
+.pkt-row-qty__input::-webkit-inner-spin-button,
+.pkt-row-rate__input::-webkit-outer-spin-button,
+.pkt-row-rate__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pkt-row-field:focus-within {
   border-color: var(--pkt-red-main);
   box-shadow: 0 0 0 3px rgba(233, 84, 101, 0.12);
+}
+
+.pkt-row-unit {
+  flex: 0 0 auto;
+  font-family: var(--pkt-font-sans);
+  font-size: var(--pkt-fs-body);
+  font-weight: 500;
+  color: var(--pkt-ink);
+  line-height: 1;
 }
 
 .pkt-complete-notice {
@@ -506,6 +504,7 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--pkt-gray-500);
 }
 
+.pkt-application-locked .pkt-row-field,
 .pkt-application-locked .pkt-row-qty__input,
 .pkt-application-locked .pkt-row-rate__input,
 .pkt-application-locked .pkt-rate-step,
@@ -1016,17 +1015,21 @@ body.modal-open {
     gap: 4px;
   }
   .pkt-rate-step {
-    min-width: 28px;
+    min-width: 24px;
     height: 34px;
     font-size: 22px;
   }
+  .pkt-row-field {
+    width: 80px;
+    min-width: 80px;
+    height: 34px;
+    padding: 0 10px;
+  }
   .pkt-row-qty__input,
   .pkt-row-rate__input {
-    width: 52px;
-    height: 34px;
     font-size: 14px;
   }
-  .pkt-row-unit { font-size: 13px; }
+  .pkt-row-unit { font-size: 14px; }
 
   .pkt-table-empty { display: block; }
   .pkt-table-empty td { display: block !important; }
@@ -1138,16 +1141,20 @@ body.modal-open {
             <td>
               <div class="pkt-row-qty" role="group" aria-label="2330 台積電 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2330 台積電 出借張數" />
-                <span class="pkt-row-unit">張</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2330 台積電 出借張數" />
+                  <span class="pkt-row-unit">張</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2330 台積電 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                <span class="pkt-row-unit">%</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                  <span class="pkt-row-unit">%</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
@@ -1161,16 +1168,20 @@ body.modal-open {
             <td>
               <div class="pkt-row-qty" role="group" aria-label="0050 元大台灣50 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="0050 元大台灣50 出借張數" />
-                <span class="pkt-row-unit">張</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="0050 元大台灣50 出借張數" />
+                  <span class="pkt-row-unit">張</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="0050 元大台灣50 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                <span class="pkt-row-unit">%</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                  <span class="pkt-row-unit">%</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
@@ -1184,16 +1195,20 @@ body.modal-open {
             <td>
               <div class="pkt-row-qty" role="group" aria-label="2317 鴻海 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2317 鴻海 出借張數" />
-                <span class="pkt-row-unit">張</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2317 鴻海 出借張數" />
+                  <span class="pkt-row-unit">張</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2317 鴻海 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                <span class="pkt-row-unit">%</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                  <span class="pkt-row-unit">%</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
@@ -1207,16 +1222,20 @@ body.modal-open {
             <td>
               <div class="pkt-row-qty" role="group" aria-label="2891 中信金 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2891 中信金 出借張數" />
-                <span class="pkt-row-unit">張</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2891 中信金 出借張數" />
+                  <span class="pkt-row-unit">張</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2891 中信金 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                <span class="pkt-row-unit">%</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                  <span class="pkt-row-unit">%</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
@@ -1230,16 +1249,20 @@ body.modal-open {
             <td>
               <div class="pkt-row-qty" role="group" aria-label="2454 聯發科 出借張數" data-default="0">
                 <button type="button" class="pkt-rate-step pkt-row-qty__decrease" aria-label="減少 1 張">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2454 聯發科 出借張數" />
-                <span class="pkt-row-unit">張</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-qty__input" value="0" aria-label="2454 聯發科 出借張數" />
+                  <span class="pkt-row-unit">張</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
             <td>
               <div class="pkt-row-rate" role="group" aria-label="2454 聯發科 利率">
                 <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                <span class="pkt-row-unit">%</span>
+                <div class="pkt-row-field">
+                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
+                  <span class="pkt-row-unit">%</span>
+                </div>
                 <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>

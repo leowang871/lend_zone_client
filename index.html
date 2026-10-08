@@ -93,6 +93,31 @@ button { font-family: inherit; cursor: pointer; }
   overflow: visible;
 }
 
+.pkt-empty-state {
+  padding: 48px 24px 56px;
+  text-align: center;
+}
+.pkt-empty-state[hidden] { display: none; }
+.pkt-empty-state__main {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--pkt-ink);
+  line-height: 1.6;
+}
+.pkt-empty-state__contact {
+  margin: 0;
+  font-size: var(--pkt-fs-body);
+  color: var(--pkt-gray-700);
+  line-height: 1.7;
+}
+.pkt-empty-state__contact a {
+  color: var(--pkt-red-main);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .pkt-tabs {
   display: flex;
   gap: 4px;
@@ -130,22 +155,26 @@ button { font-family: inherit; cursor: pointer; }
 .pkt-section-label--result { margin-top: 0; }
 
 .pkt-rate-bar {
-  margin: 20px 0 24px;
+  margin: 20px 0 0;
   padding: 14px 20px;
-  background: var(--pkt-member-bg);
+  border: none;
   border-radius: var(--pkt-r-lg);
+  background: var(--pkt-member-bg);
 }
 .pkt-rate-bar__inner {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
 }
 .pkt-rate-bar__main {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 16px;
   flex-shrink: 0;
+  flex-wrap: nowrap;
 }
 .pkt-rate-bar__label {
   margin: 0;
@@ -169,13 +198,19 @@ button { font-family: inherit; cursor: pointer; }
   border: none;
   border-radius: 0;
   background: transparent;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--pkt-ink);
 }
-.pkt-rate-step:hover:not(:disabled) {
+.pkt-rate-bar .pkt-rate-step {
   color: var(--pkt-red-main);
+}
+.pkt-rate-step:hover:not(:disabled) {
+  color: var(--pkt-red-hover);
+}
+.pkt-rate-bar .pkt-rate-step:hover:not(:disabled) {
+  color: var(--pkt-red-hover);
 }
 .pkt-rate-step:focus-visible {
   outline: 2px solid var(--pkt-red-main);
@@ -184,6 +219,9 @@ button { font-family: inherit; cursor: pointer; }
 .pkt-rate-step:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+.pkt-rate-bar .pkt-row-field {
+  background: var(--pkt-white);
 }
 .pkt-rate-value {
   min-width: 64px;
@@ -195,12 +233,7 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--pkt-ink);
 }
 .pkt-rate-bar__hint {
-  margin: 0;
-  padding: 0;
-  font-size: var(--pkt-fs-sm);
-  color: var(--pkt-gray-500);
-  line-height: 1.5;
-  flex: 1 1 200px;
+  display: none;
 }
 
 .pkt-query {
@@ -255,6 +288,20 @@ button { font-family: inherit; cursor: pointer; }
 .pkt-btn-primary:disabled {
   background: var(--pkt-gray-300);
   cursor: not-allowed;
+}
+.pkt-btn-secondary {
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid var(--pkt-gray-300);
+  border-radius: var(--pkt-r-md);
+  background: var(--pkt-white);
+  color: var(--pkt-ink);
+  font-size: var(--pkt-fs-body);
+  font-weight: 500;
+  cursor: pointer;
+}
+.pkt-btn-secondary:hover {
+  background: var(--pkt-member-bg);
 }
 
 .pkt-btn-edit {
@@ -570,6 +617,79 @@ button { font-family: inherit; cursor: pointer; }
 }
 .pkt-notes ul { margin: 0; padding-left: 1.2em; }
 .pkt-notes li { margin-bottom: 6px; }
+.pkt-notes__alert,
+.pkt-notes li.pkt-notes__alert {
+  color: var(--pkt-red-main);
+  font-weight: 700;
+}
+.pkt-modal__warning strong {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.pkt-rate-bar--submit {
+  margin: 24px 0 0;
+}
+.pkt-rate-bar.is-locked,
+.pkt-rate-bar.is-inactive {
+  opacity: 0.55;
+}
+.pkt-rate-bar.is-locked {
+  pointer-events: none;
+}
+.pkt-history-query {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+  margin: 0 0 20px;
+}
+.pkt-history-query__field {
+  flex: 0 1 160px;
+  min-width: 140px;
+}
+.pkt-history-query__field--stock {
+  flex: 1 1 200px;
+  max-width: 280px;
+}
+.pkt-history-query__field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--pkt-fs-sm);
+  color: var(--pkt-gray-700);
+  font-weight: 500;
+}
+.pkt-history-query__field input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--pkt-gray-300);
+  border-radius: var(--pkt-r-md);
+  font-size: var(--pkt-fs-body);
+  font-family: var(--pkt-font-sans);
+  box-sizing: border-box;
+}
+.pkt-history-query__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pkt-history-query__field--status {
+  flex: 0 1 160px;
+  max-width: 180px;
+}
+.pkt-history-query__field select {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--pkt-gray-100);
+  border-radius: var(--pkt-r-md);
+  font-size: var(--pkt-fs-body);
+  font-family: var(--pkt-font-sans);
+  color: var(--pkt-ink);
+  background: var(--pkt-white);
+  box-sizing: border-box;
+}
 
 .pkt-daily-empty {
   margin: 24px 0 0;
@@ -578,26 +698,30 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--pkt-gray-500);
 }
 
-.pkt-time-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+#history-table thead th:first-child,
+#history-table tbody tr td:first-child {
+  display: table-cell;
+  justify-content: center;
+  text-align: center;
   font-family: var(--pkt-font-latin);
-  line-height: 1.35;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.pkt-time-cell__date {
-  font-weight: 600;
-  color: var(--pkt-ink);
-  letter-spacing: 0.02em;
+#history-table tbody tr td {
+  text-align: center;
+  vertical-align: middle;
 }
-.pkt-time-cell__clock {
+.pkt-status {
+  display: inline-block;
   font-size: var(--pkt-fs-sm);
-  font-weight: 500;
-  color: var(--pkt-gray-700);
-  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
 }
+.pkt-status--submitted { color: #d97706; }
+.pkt-status--success { color: #16a34a; }
+.pkt-status--unmatched { color: var(--pkt-red-main); }
 
 .pkt-submit-wrap {
   display: flex;
@@ -803,6 +927,62 @@ body.modal-open {
   padding: 4px 10px;
   border-radius: var(--pkt-r-pill);
   box-shadow: var(--pkt-shadow-card);
+}
+
+/* 原型專用：不屬正式產品 UI */
+.pkt-demo-switch {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(37, 37, 37, 0.92);
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: var(--pkt-shadow-lift);
+  font-size: 12px;
+  line-height: 1.3;
+  max-width: calc(100vw - 32px);
+}
+.pkt-demo-switch__label {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+.pkt-demo-switch__seg {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 3px;
+  border-radius: 8px;
+}
+.pkt-demo-switch__btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  font: inherit;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pkt-demo-switch__btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.pkt-demo-switch__btn.is-active {
+  background: #fff;
+  color: var(--pkt-ink);
+}
+.pkt-demo-switch__hint {
+  margin: 0;
+  opacity: 0.65;
+  font-size: 11px;
 }
 
 .pkt-mobile-menu,
@@ -1056,6 +1236,13 @@ body.modal-open {
 
   .float-cs { display: none; }
 
+  .pkt-demo-switch {
+    left: 10px;
+    bottom: 10px;
+    padding: 8px 10px;
+  }
+  .pkt-demo-switch__btn { padding: 6px 10px; }
+
   .pkt-modal { padding: 12px; }
   .pkt-modal__dialog {
     max-width: 360px;
@@ -1104,8 +1291,14 @@ body.modal-open {
   <main class="pkt-main">
     <h1 class="pkt-page-title">券差出借</h1>
     <div class="pkt-panel">
+      <div class="pkt-empty-state" id="lend-unavailable" hidden>
+        <p class="pkt-empty-state__main">您沒有可以出借的標的或超過借券時間</p>
+        <p class="pkt-empty-state__contact">若有問題，請於上班時間致電客服 <a href="tel:0809089001">0809-089-001</a></p>
+      </div>
+      <div id="lend-content">
       <div class="pkt-tabs" role="tablist" aria-label="券差出借功能">
         <button type="button" class="pkt-tab is-active" role="tab" id="tab-btn-apply" aria-selected="true" aria-controls="tab-panel-apply">券差出借申請</button>
+        <button type="button" class="pkt-tab" role="tab" id="tab-btn-history" aria-selected="false" aria-controls="tab-panel-history">歷史紀錄</button>
       </div>
 
       <div class="pkt-tab-panel" id="tab-panel-apply" role="tabpanel" aria-labelledby="tab-btn-apply">
@@ -1122,13 +1315,6 @@ body.modal-open {
             </th>
             <th>可出借張數</th>
             <th>出借張數</th>
-            <th>
-              <span class="pkt-th-with-tip" id="rate-tip-wrap">
-                利率
-                <button type="button" class="pkt-tip-btn" id="rate-tip-btn" aria-expanded="false" aria-controls="rate-tip" aria-label="利率說明">i</button>
-                <span class="pkt-tip-bubble" id="rate-tip" role="tooltip">此利率為年利率，實際券差出借結果依市場供需及成交狀況為準。設定較高利率可能降低成交機率。</span>
-              </span>
-            </th>
           </tr>
         </thead>
         <tbody id="lend-tbody">
@@ -1148,16 +1334,6 @@ body.modal-open {
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
-            <td>
-              <div class="pkt-row-rate" role="group" aria-label="2330 台積電 利率">
-                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <div class="pkt-row-field">
-                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                  <span class="pkt-row-unit">%</span>
-                </div>
-                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
-              </div>
-            </td>
           </tr>
           <tr class="row-pink" data-code="0050" data-name="元大台灣50" data-stock="8">
             <td>
@@ -1173,16 +1349,6 @@ body.modal-open {
                   <span class="pkt-row-unit">張</span>
                 </div>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
-              </div>
-            </td>
-            <td>
-              <div class="pkt-row-rate" role="group" aria-label="0050 元大台灣50 利率">
-                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <div class="pkt-row-field">
-                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                  <span class="pkt-row-unit">%</span>
-                </div>
-                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
           </tr>
@@ -1202,16 +1368,6 @@ body.modal-open {
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
-            <td>
-              <div class="pkt-row-rate" role="group" aria-label="2317 鴻海 利率">
-                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <div class="pkt-row-field">
-                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                  <span class="pkt-row-unit">%</span>
-                </div>
-                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
-              </div>
-            </td>
           </tr>
           <tr class="row-pink" data-code="2891" data-name="中信金" data-stock="10">
             <td>
@@ -1227,16 +1383,6 @@ body.modal-open {
                   <span class="pkt-row-unit">張</span>
                 </div>
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
-              </div>
-            </td>
-            <td>
-              <div class="pkt-row-rate" role="group" aria-label="2891 中信金 利率">
-                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <div class="pkt-row-field">
-                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                  <span class="pkt-row-unit">%</span>
-                </div>
-                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
               </div>
             </td>
           </tr>
@@ -1256,23 +1402,35 @@ body.modal-open {
                 <button type="button" class="pkt-rate-step pkt-row-qty__increase" aria-label="增加 1 張">+</button>
               </div>
             </td>
-            <td>
-              <div class="pkt-row-rate" role="group" aria-label="2454 聯發科 利率">
-                <button type="button" class="pkt-rate-step pkt-row-rate__decrease" aria-label="降低利率 1%">−</button>
-                <div class="pkt-row-field">
-                  <input type="text" inputmode="numeric" class="pkt-row-rate__input" value="3" aria-label="利率" />
-                  <span class="pkt-row-unit">%</span>
-                </div>
-                <button type="button" class="pkt-rate-step pkt-row-rate__increase" aria-label="提高利率 1%">+</button>
-              </div>
-            </td>
           </tr>
           <tr class="pkt-table-empty" id="lend-empty" hidden>
-            <td colspan="4">查無符合的標的，請調整關鍵字後再查詢。</td>
+            <td colspan="3">查無符合的標的，請調整關鍵字後再查詢。</td>
           </tr>
         </tbody>
       </table>
       </div>
+
+      <section class="pkt-rate-bar pkt-rate-bar--submit" id="rate-bar" aria-labelledby="unified-rate-label">
+        <div class="pkt-rate-bar__inner">
+          <div class="pkt-rate-bar__main">
+            <span id="unified-rate-label" class="pkt-rate-bar__label">
+              <span class="pkt-th-with-tip" id="rate-tip-wrap">
+                出借利率
+                <button type="button" class="pkt-tip-btn" id="rate-tip-btn" aria-expanded="false" aria-controls="rate-tip" aria-label="利率說明">i</button>
+                <span class="pkt-tip-bubble" id="rate-tip" role="tooltip">此利率為年利率，實際券差出借結果依市場供需及成交狀況為準。設定較高利率可能降低成交機率。本次所有已選標的套用同一利率。</span>
+              </span>
+            </span>
+            <div class="pkt-rate-bar__control" role="group" aria-labelledby="unified-rate-label">
+              <button type="button" class="pkt-rate-step" id="rate-decrease" aria-label="降低利率 1%">−</button>
+              <div class="pkt-row-field">
+                <input type="text" inputmode="numeric" class="pkt-row-rate__input" id="unified-rate" value="3" aria-label="出借利率" />
+                <span class="pkt-row-unit">%</span>
+              </div>
+              <button type="button" class="pkt-rate-step" id="rate-increase" aria-label="提高利率 1%">+</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div class="pkt-submit-wrap">
         <button type="button" class="pkt-btn-primary pkt-btn-submit" id="btn-open-confirm">
@@ -1284,10 +1442,59 @@ body.modal-open {
       <div class="pkt-notes">
         <h3>注意事項：</h3>
         <ul>
+          <li class="pkt-notes__alert">送出後即不可更改出借標的、利率與張數，請確認無誤後再送出。</li>
+          <li>請先勾選標的並調整出借張數，再於下方統一設定出借利率。</li>
           <li>券差出借張數請以「[-]」「[+]」調整，或於中間欄位手動輸入整數；可選範圍為 0 張至該標的可券差出借張數，超出範圍將自動調整為合法值。</li>
-          <li>券差出借利率請以「[-]」「[+]」調整，或於中間欄位手動輸入整數，預設 3%，可調範圍 1%～7%（每次 1%），超出範圍將自動調整為合法值；調整任一標的會同步套用全部標的。</li>
+          <li>券差出借利率請以「[-]」「[+]」調整，或於中間欄位手動輸入整數，預設 3%，可調範圍 1%～7%（每次 1%），超出範圍將自動調整為合法值；本次所有已選標的套用同一利率。</li>
           <li>可券差出借張數為查詢當下可出借參考，實際可券差出借數量與利率以送出時系統檢核為準。</li>
         </ul>
+      </div>
+      </div>
+
+      <div class="pkt-tab-panel" id="tab-panel-history" role="tabpanel" aria-labelledby="tab-btn-history" hidden>
+        <form class="pkt-history-query" id="history-query-form" autocomplete="off">
+          <div class="pkt-history-query__field">
+            <label for="history-date-from">送出日期（起）</label>
+            <input type="date" id="history-date-from" name="history-date-from" />
+          </div>
+          <div class="pkt-history-query__field">
+            <label for="history-date-to">送出日期（迄）</label>
+            <input type="date" id="history-date-to" name="history-date-to" />
+          </div>
+          <div class="pkt-history-query__field pkt-history-query__field--stock">
+            <label for="history-stock-query">股票名稱</label>
+            <input type="text" id="history-stock-query" name="history-stock-query" placeholder="例：台積電 或 2330" />
+          </div>
+          <div class="pkt-history-query__field pkt-history-query__field--status">
+            <label for="history-status-query">狀態</label>
+            <select id="history-status-query" name="history-status-query">
+              <option value="">全部</option>
+              <option value="已送出申請">已送出申請</option>
+              <option value="出借成功">出借成功</option>
+              <option value="未搓合成功">未搓合成功</option>
+            </select>
+          </div>
+          <div class="pkt-history-query__actions">
+            <button type="button" class="pkt-btn-secondary" id="history-query-clear">清除</button>
+            <button type="submit" class="pkt-btn-primary">查詢</button>
+            <button type="button" class="pkt-btn-primary" id="history-export">匯出</button>
+          </div>
+        </form>
+        <div class="pkt-table-scroll">
+          <table class="pkt-table" id="history-table">
+            <thead>
+              <tr>
+                <th>送出日期</th>
+                <th>股票名稱</th>
+                <th>出借張數</th>
+                <th>利率</th>
+                <th>狀態</th>
+              </tr>
+            </thead>
+            <tbody id="history-record-tbody"></tbody>
+          </table>
+        </div>
+        <p class="pkt-daily-empty" id="history-record-empty" hidden>查無符合條件的歷史紀錄。</p>
       </div>
       </div>
     </div>
@@ -1300,7 +1507,7 @@ body.modal-open {
         <p class="pkt-modal__title" id="confirm-modal-title">確認券差借券內容</p>
         <ul class="pkt-submit-summary" id="confirm-summary" aria-label="確認券差借券明細"></ul>
         <p class="pkt-modal__warning">
-          提醒您，送出後即不可修改。<br />
+          <strong>送出後即不可更改出借標的、利率與張數。</strong>
           券差出借股票後，股票撥回時買進成本將歸0，送出前請確認股票成本價格。
         </p>
       </div>
@@ -1326,17 +1533,100 @@ body.modal-open {
     <span class="float-cs__label">智能客服</span>
   </a>
 
+  <aside class="pkt-demo-switch" id="demo-switch" aria-label="Demo 畫面切換">
+    <span class="pkt-demo-switch__label">Demo 畫面</span>
+    <div class="pkt-demo-switch__seg" role="group" aria-label="選擇測試狀態">
+      <button type="button" class="pkt-demo-switch__btn" data-demo="normal" id="demo-btn-normal">正常</button>
+      <button type="button" class="pkt-demo-switch__btn" data-demo="error" id="demo-btn-error">空狀態</button>
+    </div>
+    <p class="pkt-demo-switch__hint" id="demo-switch-hint">僅原型測試用</p>
+  </aside>
+
   <script>
 (function () {
+  var LEND_FORCE_UNAVAILABLE = /[?&]unavailable=1(?:&|$)/.test(location.search);
+  var LEND_FORCE_AVAILABLE = /[?&]available=1(?:&|$)/.test(location.search);
+  var DEMO_MODE_STORAGE_KEY = 'pkt_lend_demo_mode';
+  var demoMode = 'normal';
+
   var form = document.getElementById('lend-query-form');
   var input = document.getElementById('symbol-query');
   var tbody = document.getElementById('lend-tbody');
   var emptyRow = document.getElementById('lend-empty');
+  var lendUnavailable = document.getElementById('lend-unavailable');
+  var lendContent = document.getElementById('lend-content');
   var dataRows = Array.prototype.slice.call(
     tbody.querySelectorAll('tr[data-code]')
   );
   var rowSelectAll = document.getElementById('row-select-all');
   var isSubmitted = false;
+
+  function hasLendableSymbols() {
+    return dataRows.some(function (row) {
+      return parseStock(row) > 0;
+    });
+  }
+
+  function readStoredDemoMode() {
+    try {
+      var saved = localStorage.getItem(DEMO_MODE_STORAGE_KEY);
+      if (saved === 'normal' || saved === 'error') return saved;
+    } catch (e) { /* ignore */ }
+    return null;
+  }
+
+  function writeStoredDemoMode(mode) {
+    try {
+      localStorage.setItem(DEMO_MODE_STORAGE_KEY, mode);
+    } catch (e) { /* ignore */ }
+  }
+
+  function resolveInitialDemoMode() {
+    if (LEND_FORCE_UNAVAILABLE) return 'error';
+    if (LEND_FORCE_AVAILABLE) return 'normal';
+    return readStoredDemoMode() || 'normal';
+  }
+
+  function syncDemoSwitchUI() {
+    var buttons = document.querySelectorAll('.pkt-demo-switch__btn');
+    buttons.forEach(function (btn) {
+      var active = btn.getAttribute('data-demo') === demoMode;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    var hint = document.getElementById('demo-switch-hint');
+    if (hint) {
+      hint.textContent = demoMode === 'error'
+        ? '目前：無可出借／逾時空狀態'
+        : '目前：正常申請畫面';
+    }
+  }
+
+  function setDemoMode(mode, persist) {
+    demoMode = mode === 'error' ? 'error' : 'normal';
+    if (persist !== false) writeStoredDemoMode(demoMode);
+    syncDemoSwitchUI();
+    applyPageAvailability();
+  }
+
+  function applyPageAvailability() {
+    var available = demoMode === 'normal' && hasLendableSymbols();
+    if (lendUnavailable) lendUnavailable.hidden = available;
+    if (lendContent) lendContent.hidden = !available;
+  }
+
+  function initDemoSwitch() {
+    demoMode = resolveInitialDemoMode();
+    writeStoredDemoMode(demoMode);
+    syncDemoSwitchUI();
+    var root = document.getElementById('demo-switch');
+    if (!root) return;
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest('.pkt-demo-switch__btn');
+      if (!btn) return;
+      setDemoMode(btn.getAttribute('data-demo'), true);
+    });
+  }
 
   function isMobileLayout() {
     return window.matchMedia('(max-width: 560px)').matches;
@@ -1355,7 +1645,7 @@ body.modal-open {
     var selected = isRowSelected(row) && !isSubmitted;
     row.classList.toggle('is-selected', selected);
     updateQtyUI(row);
-    updateRateUIForRow(row);
+    updateRateUI();
   }
 
   function syncSelectAllState() {
@@ -1437,13 +1727,18 @@ body.modal-open {
     input.disabled = !canEdit;
   }
 
+  function afterQtyChange() {
+    updateRateUI();
+  }
+
   var RATE_MIN = 1;
   var RATE_MAX = 7;
   var RATE_STEP = 1;
   var RATE_DEFAULT = 3;
 
   var rateValue = RATE_DEFAULT;
-  var rateDisplay = document.getElementById('unified-rate-display');
+  var rateEmpty = false;
+  var rateBar = document.getElementById('rate-bar');
   var rateInput = document.getElementById('unified-rate');
   var rateDecrease = document.getElementById('rate-decrease');
   var rateIncrease = document.getElementById('rate-increase');
@@ -1458,90 +1753,118 @@ body.modal-open {
     return clampRate(value) + ' %';
   }
 
-  function updateRateUIForRow(row) {
-    var canEdit = isRowSelected(row) && !isSubmitted;
-    var input = row.querySelector('.pkt-row-rate__input');
-    if (input) {
-      input.value = String(rateValue);
-      input.disabled = !canEdit;
-      input.setAttribute('aria-valuemin', String(RATE_MIN));
-      input.setAttribute('aria-valuemax', String(RATE_MAX));
-    }
-    var dec = row.querySelector('.pkt-row-rate__decrease');
-    var inc = row.querySelector('.pkt-row-rate__increase');
-    if (dec) dec.disabled = !canEdit || rateValue <= RATE_MIN;
-    if (inc) inc.disabled = !canEdit || rateValue >= RATE_MAX;
+  function hasLendQty() {
+    return dataRows.some(function (row) {
+      return isRowSelected(row) && getRowQty(row) > 0;
+    });
+  }
+
+  function hasValidRate() {
+    return !rateEmpty && !isNaN(rateValue) && rateValue >= RATE_MIN && rateValue <= RATE_MAX;
+  }
+
+  function syncNextButton() {
+    var btn = document.getElementById('btn-open-confirm');
+    if (!btn) return;
+    btn.disabled = isSubmitted || !hasValidRate() || !hasLendQty();
+  }
+
+  function canEditRate() {
+    return !isSubmitted && hasLendQty();
   }
 
   function updateRateUI() {
-    rateValue = clampRate(rateValue);
-    if (rateDisplay) rateDisplay.textContent = formatRateDisplay(rateValue);
-    if (rateInput) rateInput.value = String(rateValue);
-    if (rateDecrease) rateDecrease.disabled = rateValue <= RATE_MIN;
-    if (rateIncrease) rateIncrease.disabled = rateValue >= RATE_MAX;
-    dataRows.forEach(updateRateUIForRow);
+    var editable = canEditRate();
+    if (rateInput) {
+      rateInput.disabled = !editable;
+      rateInput.setAttribute('aria-valuemin', String(RATE_MIN));
+      rateInput.setAttribute('aria-valuemax', String(RATE_MAX));
+      if (rateEmpty) {
+        rateInput.value = '';
+      } else {
+        rateValue = clampRate(rateValue);
+        rateInput.value = String(rateValue);
+      }
+    }
+    if (rateDecrease) {
+      rateDecrease.disabled = !editable || (!rateEmpty && rateValue <= RATE_MIN);
+    }
+    if (rateIncrease) {
+      rateIncrease.disabled = !editable || (!rateEmpty && rateValue >= RATE_MAX);
+    }
+    if (rateBar) {
+      rateBar.classList.toggle('is-locked', isSubmitted);
+      rateBar.classList.toggle('is-inactive', !isSubmitted && !hasLendQty());
+    }
+    syncNextButton();
   }
 
   function commitRateFromInput(raw) {
-    rateValue = clampRate(parseInt(raw, 10));
+    var s = String(raw == null ? '' : raw).trim();
+    if (!s) {
+      rateEmpty = true;
+      updateRateUI();
+      return;
+    }
+    rateEmpty = false;
+    rateValue = clampRate(parseInt(s, 10));
     updateRateUI();
   }
 
   function initRateStepper() {
+    rateEmpty = false;
     rateValue = clampRate(RATE_DEFAULT);
     updateRateUI();
     if (rateDecrease) {
       rateDecrease.addEventListener('click', function () {
-        rateValue = clampRate(rateValue - RATE_STEP);
+        if (!canEditRate()) return;
+        if (rateEmpty) {
+          rateEmpty = false;
+          rateValue = RATE_DEFAULT;
+        } else {
+          rateValue = clampRate(rateValue - RATE_STEP);
+        }
         updateRateUI();
       });
     }
     if (rateIncrease) {
       rateIncrease.addEventListener('click', function () {
-        rateValue = clampRate(rateValue + RATE_STEP);
+        if (!canEditRate()) return;
+        if (rateEmpty) {
+          rateEmpty = false;
+          rateValue = RATE_DEFAULT;
+        } else {
+          rateValue = clampRate(rateValue + RATE_STEP);
+        }
         updateRateUI();
       });
     }
-    document.querySelectorAll('.pkt-row-rate__decrease').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        if (isSubmitted) return;
-        var row = btn.closest('tr[data-code]');
-        if (row && !isRowSelected(row)) return;
-        rateValue = clampRate(rateValue - RATE_STEP);
-        updateRateUI();
-      });
-    });
-    document.querySelectorAll('.pkt-row-rate__increase').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        if (isSubmitted) return;
-        var row = btn.closest('tr[data-code]');
-        if (row && !isRowSelected(row)) return;
-        rateValue = clampRate(rateValue + RATE_STEP);
-        updateRateUI();
-      });
-    });
-    document.querySelectorAll('.pkt-row-rate__input').forEach(function (input) {
-      input.addEventListener('input', function () {
-        input.value = input.value.replace(/[^\d]/g, '');
-      });
-      input.addEventListener('blur', function () {
-        var row = input.closest('tr[data-code]');
-        if (row && !isRowSelected(row)) {
-          input.value = String(rateValue);
-          return;
+    if (rateInput) {
+      rateInput.addEventListener('input', function () {
+        if (!canEditRate()) return;
+        rateInput.value = rateInput.value.replace(/[^\d]/g, '');
+        var s = rateInput.value.trim();
+        if (!s) {
+          rateEmpty = true;
+        } else {
+          rateEmpty = false;
+          rateValue = clampRate(parseInt(s, 10));
         }
-        commitRateFromInput(input.value);
+        updateRateUI();
       });
-      input.addEventListener('keydown', function (e) {
+      rateInput.addEventListener('blur', function () {
+        if (!canEditRate()) return;
+        commitRateFromInput(rateInput.value);
+      });
+      rateInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
           e.preventDefault();
-          var row = input.closest('tr[data-code]');
-          if (row && !isRowSelected(row)) return;
-          commitRateFromInput(input.value);
-          input.blur();
+          if (!canEditRate()) return;
+          commitRateFromInput(rateInput.value);
+          rateInput.blur();
         }
       });
-    });
+    }
   }
 
   function initQtySteppers() {
@@ -1559,6 +1882,7 @@ body.modal-open {
           if (isSubmitted || !isRowSelected(row)) return;
           input.value = String(clampQty((parseInt(input.value, 10) || 0) - 1, parseStock(row)));
           updateQtyUI(row);
+          afterQtyChange();
         });
       }
       if (inc) {
@@ -1566,18 +1890,22 @@ body.modal-open {
           if (isSubmitted || !isRowSelected(row)) return;
           input.value = String(clampQty((parseInt(input.value, 10) || 0) + 1, parseStock(row)));
           updateQtyUI(row);
+          afterQtyChange();
         });
       }
       input.addEventListener('input', function () {
         input.value = input.value.replace(/[^\d]/g, '');
+        afterQtyChange();
       });
       input.addEventListener('blur', function () {
         updateQtyUI(row);
+        afterQtyChange();
       });
       input.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
           e.preventDefault();
           updateQtyUI(row);
+          afterQtyChange();
           input.blur();
         }
       });
@@ -1639,12 +1967,14 @@ body.modal-open {
   function openConfirmModal() {
     if (!confirmModal) return;
     dataRows.forEach(updateQtyUI);
-    var focusedRate = document.activeElement;
-    if (focusedRate && focusedRate.classList && focusedRate.classList.contains('pkt-row-rate__input')) {
-      commitRateFromInput(focusedRate.value);
-    } else {
+    if (rateInput && document.activeElement === rateInput) {
+      commitRateFromInput(rateInput.value);
+    } else if (!rateEmpty) {
       updateRateUI();
+    } else {
+      syncNextButton();
     }
+    if (!hasValidRate() || !hasLendQty()) return;
     renderApplicationSummary(confirmSummary, collectSubmittedItems());
     confirmModal.classList.add('is-open');
     confirmModal.setAttribute('aria-hidden', 'false');
@@ -1733,14 +2063,13 @@ body.modal-open {
       }
       row.classList.remove('is-selected');
       updateQtyUI(row);
-      updateRateUIForRow(row);
     });
     updateRateUI();
   }
 
   if (btnOpenConfirm) {
     btnOpenConfirm.addEventListener('click', function () {
-      if (isSubmitted) return;
+      if (isSubmitted || !hasValidRate() || !hasLendQty()) return;
       openConfirmModal();
     });
   }
@@ -1753,54 +2082,68 @@ body.modal-open {
   if (confirmSubmit) {
     confirmSubmit.addEventListener('click', function () {
       closeConfirmModal();
+      addHistoryRecordsFromSubmit();
       lockSubmittedForm();
+      showSubmitToast();
     });
   }
 
   var tabBtnApply = document.getElementById('tab-btn-apply');
-  var tabBtnDaily = document.getElementById('tab-btn-daily');
-  var tabPanelApply = document.getElementById('tab-panel-apply');
-  var tabPanelDaily = document.getElementById('tab-panel-daily');
+  var tabBtnHistory = document.getElementById('tab-btn-history');
+  var tabPanelHistory = document.getElementById('tab-panel-history');
 
   function switchTab(tabId) {
-    var isDaily = tabId === 'daily';
+    var isHistory = tabId === 'history';
     if (tabBtnApply) {
-      tabBtnApply.classList.toggle('is-active', !isDaily);
-      tabBtnApply.setAttribute('aria-selected', isDaily ? 'false' : 'true');
+      tabBtnApply.classList.toggle('is-active', !isHistory);
+      tabBtnApply.setAttribute('aria-selected', isHistory ? 'false' : 'true');
     }
-    if (tabBtnDaily) {
-      tabBtnDaily.classList.toggle('is-active', isDaily);
-      tabBtnDaily.setAttribute('aria-selected', isDaily ? 'true' : 'false');
+    if (tabBtnHistory) {
+      tabBtnHistory.classList.toggle('is-active', isHistory);
+      tabBtnHistory.setAttribute('aria-selected', isHistory ? 'true' : 'false');
     }
-    if (tabPanelApply) tabPanelApply.hidden = isDaily;
-    if (tabPanelDaily) tabPanelDaily.hidden = !isDaily;
+    if (tabPanelApply) tabPanelApply.hidden = isHistory;
+    if (tabPanelHistory) tabPanelHistory.hidden = !isHistory;
   }
 
   if (tabBtnApply) {
     tabBtnApply.addEventListener('click', function () { switchTab('apply'); });
   }
-  if (tabBtnDaily) {
-    tabBtnDaily.addEventListener('click', function () { switchTab('daily'); });
+  if (tabBtnHistory) {
+    tabBtnHistory.addEventListener('click', function () { switchTab('history'); });
   }
 
-  var dailyRecords = [
-    { id: 'dr-1', date: '2026/05/20', time: '09:42:18', code: '2330', name: '台積電', stock: 3, qty: 1 },
-    { id: 'dr-2', date: '2026/05/20', time: '10:15:06', code: '0050', name: '元大台灣50', stock: 8, qty: 3 },
-    { id: 'dr-3', date: '2026/05/20', time: '11:03:42', code: '2317', name: '鴻海', stock: 5, qty: 2 }
+  var HISTORY_LAUNCH_DATE = '2026/05/01';
+  var HISTORY_STATUS = {
+    submitted: '已送出申請',
+    success: '出借成功',
+    unmatched: '未搓合成功'
+  };
+  var HISTORY_STATUS_CLASS = {
+    '已送出申請': 'pkt-status--submitted',
+    '出借成功': 'pkt-status--success',
+    '未搓合成功': 'pkt-status--unmatched'
+  };
+  var historyRecords = [
+    { id: 'hr-1', date: '2026/05/02', code: '2330', name: '台積電', qty: 1, rate: 3, status: HISTORY_STATUS.success },
+    { id: 'hr-2', date: '2026/05/15', code: '0050', name: '元大台灣50', qty: 2, rate: 4, status: HISTORY_STATUS.unmatched },
+    { id: 'hr-3', date: '2026/06/03', code: '2317', name: '鴻海', qty: 2, rate: 3, status: HISTORY_STATUS.success },
+    { id: 'hr-4', date: '2026/07/18', code: '2891', name: '中信金', qty: 5, rate: 2, status: HISTORY_STATUS.submitted },
+    { id: 'hr-5', date: '2026/08/26', code: '2454', name: '聯發科', qty: 1, rate: 5, status: HISTORY_STATUS.unmatched },
+    { id: 'hr-6', date: '2026/09/19', code: '2330', name: '台積電', qty: 2, rate: 3, status: HISTORY_STATUS.success },
+    { id: 'hr-7', date: '2026/10/03', code: '0050', name: '元大台灣50', qty: 3, rate: 3, status: HISTORY_STATUS.submitted }
   ];
 
-  var dailyTbody = document.getElementById('daily-record-tbody');
-  var dailyEmpty = document.getElementById('daily-record-empty');
-  var recordEditModal = document.getElementById('record-edit-modal');
-  var recordEditBackdrop = document.getElementById('record-edit-backdrop');
-  var recordEditCancel = document.getElementById('record-edit-cancel');
-  var recordEditSave = document.getElementById('record-edit-save');
-  var recordEditSymbol = document.getElementById('record-edit-symbol');
-  var recordEditQty = document.getElementById('record-edit-qty');
-  var recordEditRateDisplay = document.getElementById('record-edit-rate-display');
-  var recordRateDecrease = document.getElementById('record-rate-decrease');
-  var recordRateIncrease = document.getElementById('record-rate-increase');
-  var editingRecordId = null;
+  var historyTbody = document.getElementById('history-record-tbody');
+  var historyEmpty = document.getElementById('history-record-empty');
+  var historyQueryForm = document.getElementById('history-query-form');
+  var historyDateFrom = document.getElementById('history-date-from');
+  var historyDateTo = document.getElementById('history-date-to');
+  var historyStockQuery = document.getElementById('history-stock-query');
+  var historyStatusQuery = document.getElementById('history-status-query');
+  var historyQueryClear = document.getElementById('history-query-clear');
+  var historyExportBtn = document.getElementById('history-export');
+  var historyFilter = { from: '', to: '', stock: '', status: '' };
 
   function pad2(n) {
     return (n < 10 ? '0' : '') + n;
@@ -1814,10 +2157,22 @@ body.modal-open {
     };
   }
 
+  function slashToIso(value) {
+    var s = String(value || '').trim();
+    var m = s.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
+    return m ? m[1] + '-' + m[2] + '-' + m[3] : '';
+  }
+
+  function isoToSlash(value) {
+    var s = String(value || '').trim();
+    var m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? m[1] + '/' + m[2] + '/' + m[3] : '';
+  }
+
   function normalizeDateSlash(value) {
     var s = String(value || '').trim();
     if (!s) return '';
-    var m = s.match(/^(\d{4})[\/\s]+(\d{1,2})[\/\s]+(\d{1,2})$/);
+    var m = s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
     if (m) {
       return m[1] + '/' + pad2(parseInt(m[2], 10) || 0) + '/' + pad2(parseInt(m[3], 10) || 0);
     }
@@ -1837,210 +2192,190 @@ body.modal-open {
     return s;
   }
 
-  function ensureRecordDateTime(rec) {
+  function ensureRecordDate(rec) {
     var now = formatDateTimeNow();
     if (!rec.date) rec.date = now.date;
-    if (!rec.time) rec.time = now.time;
     rec.date = normalizeDateSlash(rec.date);
-    rec.time = normalizeTimeHms(rec.time);
+    if (!rec.status) rec.status = HISTORY_STATUS.submitted;
   }
 
-  function fillTimeCell(td, rec) {
-    ensureRecordDateTime(rec);
-    td.className = 'pkt-time-cell';
-    var dateSpan = document.createElement('span');
-    dateSpan.className = 'pkt-time-cell__date';
-    dateSpan.textContent = rec.date;
-    var clockSpan = document.createElement('span');
-    clockSpan.className = 'pkt-time-cell__clock';
-    clockSpan.textContent = rec.time;
-    td.appendChild(dateSpan);
-    td.appendChild(clockSpan);
+  function statusClassName(status) {
+    return HISTORY_STATUS_CLASS[status] || 'pkt-status--submitted';
   }
 
   function symbolLabel(rec) {
     return rec.code + ' ' + rec.name;
   }
 
-  function findRecord(id) {
-    for (var i = 0; i < dailyRecords.length; i += 1) {
-      if (dailyRecords[i].id === id) return dailyRecords[i];
-    }
-    return null;
+  function initHistoryQueryDefaults() {
+    var today = formatDateTimeNow().date;
+    if (historyDateFrom) historyDateFrom.value = slashToIso(HISTORY_LAUNCH_DATE);
+    if (historyDateTo) historyDateTo.value = slashToIso(today);
+    historyFilter.from = HISTORY_LAUNCH_DATE;
+    historyFilter.to = today;
+    historyFilter.stock = '';
+    historyFilter.status = '';
+    if (historyStockQuery) historyStockQuery.value = '';
+    if (historyStatusQuery) historyStatusQuery.value = '';
   }
 
-  function renderDailyRecords() {
-    if (!dailyTbody) return;
-    dailyTbody.innerHTML = '';
-    if (dailyRecords.length === 0) {
-      if (dailyEmpty) dailyEmpty.hidden = false;
+  function recordMatchesHistoryFilter(rec) {
+    ensureRecordDate(rec);
+    if (historyFilter.from && rec.date < historyFilter.from) return false;
+    if (historyFilter.to && rec.date > historyFilter.to) return false;
+    if (historyFilter.status && rec.status !== historyFilter.status) return false;
+    var q = String(historyFilter.stock || '').trim();
+    if (!q) return true;
+    var label = symbolLabel(rec);
+    var qLower = q.toLowerCase();
+    return (
+      rec.code.indexOf(q) !== -1 ||
+      rec.name.indexOf(q) !== -1 ||
+      label.indexOf(q) !== -1 ||
+      rec.code.toLowerCase().indexOf(qLower) !== -1 ||
+      label.toLowerCase().indexOf(qLower) !== -1
+    );
+  }
+
+  function getFilteredHistoryRecords() {
+    return historyRecords
+      .slice()
+      .filter(recordMatchesHistoryFilter)
+      .sort(function (a, b) {
+        ensureRecordDate(a);
+        ensureRecordDate(b);
+        if (a.date !== b.date) return a.date < b.date ? 1 : -1;
+        return 0;
+      });
+  }
+
+  function csvEscape(value) {
+    var s = String(value == null ? '' : value);
+    if (/[",\n\r]/.test(s)) {
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  }
+
+  function exportHistoryRecords() {
+    var filtered = getFilteredHistoryRecords();
+    if (!filtered.length) {
+      window.alert('查無符合條件的歷史紀錄，無法匯出。');
       return;
     }
-    if (dailyEmpty) dailyEmpty.hidden = true;
+    var lines = ['送出日期,股票名稱,出借張數,利率,狀態'];
+    filtered.forEach(function (rec) {
+      ensureRecordDate(rec);
+      lines.push([
+        csvEscape(rec.date),
+        csvEscape(symbolLabel(rec)),
+        csvEscape(String(rec.qty)),
+        csvEscape(String(rec.rate != null ? rec.rate : RATE_DEFAULT)),
+        csvEscape(rec.status)
+      ].join(','));
+    });
+    var bom = '\uFEFF';
+    var blob = new Blob([bom + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var today = formatDateTimeNow().date.replace(/\//g, '');
+    a.href = url;
+    a.download = '券差出借歷史紀錄_' + today + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
-    dailyRecords.forEach(function (rec, index) {
+  function renderHistoryRecords() {
+    if (!historyTbody) return;
+    historyTbody.innerHTML = '';
+    var filtered = getFilteredHistoryRecords();
+
+    if (filtered.length === 0) {
+      if (historyEmpty) historyEmpty.hidden = false;
+      return;
+    }
+    if (historyEmpty) historyEmpty.hidden = true;
+
+    filtered.forEach(function (rec, index) {
+      ensureRecordDate(rec);
       var tr = document.createElement('tr');
       tr.className = index % 2 === 0 ? 'row-gray' : 'row-pink';
       tr.setAttribute('data-record-id', rec.id);
 
       var tdTime = document.createElement('td');
-      fillTimeCell(tdTime, rec);
+      tdTime.textContent = rec.date;
 
       var tdSymbol = document.createElement('td');
       tdSymbol.textContent = symbolLabel(rec);
       tdSymbol.style.fontFamily = 'var(--pkt-font-sans)';
 
-      var tdStock = document.createElement('td');
-      tdStock.className = 'pkt-stock-cell';
-      tdStock.textContent = String(rec.stock);
-
       var tdQty = document.createElement('td');
       tdQty.className = 'pkt-qty-cell';
       tdQty.textContent = rec.qty.toLocaleString('zh-TW') + ' 張';
 
-      var tdEdit = document.createElement('td');
-      var btnEdit = document.createElement('button');
-      btnEdit.type = 'button';
-      btnEdit.className = 'pkt-btn-edit';
-      btnEdit.textContent = '編輯';
-      btnEdit.setAttribute('aria-label', '編輯 ' + symbolLabel(rec));
-      btnEdit.addEventListener('click', function () {
-        openRecordEditModal(rec.id);
-      });
-      tdEdit.appendChild(btnEdit);
+      var tdRate = document.createElement('td');
+      tdRate.textContent = formatRateDisplay(rec.rate != null ? rec.rate : RATE_DEFAULT);
+
+      var tdStatus = document.createElement('td');
+      var statusEl = document.createElement('span');
+      statusEl.className = 'pkt-status ' + statusClassName(rec.status);
+      statusEl.textContent = rec.status;
+      tdStatus.appendChild(statusEl);
 
       tr.appendChild(tdTime);
       tr.appendChild(tdSymbol);
-      tr.appendChild(tdStock);
       tr.appendChild(tdQty);
-      tr.appendChild(tdEdit);
-      dailyTbody.appendChild(tr);
+      tr.appendChild(tdRate);
+      tr.appendChild(tdStatus);
+      historyTbody.appendChild(tr);
     });
   }
 
-  function buildRecordQtySelect(stock, selected) {
-    if (!recordEditQty) return;
-    recordEditQty.innerHTML = '';
-    var preferred = Math.max(0, Math.min(selected, stock));
-    var frag = document.createDocumentFragment();
-    for (var n = 0; n <= stock; n += 1) {
-      var opt = document.createElement('option');
-      opt.value = String(n);
-      opt.textContent = n.toLocaleString('zh-TW') + ' 張';
-      if (n === preferred) opt.selected = true;
-      frag.appendChild(opt);
-    }
-    recordEditQty.appendChild(frag);
-    recordEditQty.value = String(preferred);
-  }
-
-  function syncRecordEditRateUI() {
-    if (recordEditRateDisplay) {
-      recordEditRateDisplay.textContent = formatRateDisplay(rateValue);
-    }
-    if (recordRateDecrease) recordRateDecrease.disabled = rateValue <= RATE_MIN;
-    if (recordRateIncrease) recordRateIncrease.disabled = rateValue >= RATE_MAX;
-    updateRateUI();
-  }
-
-  function openRecordEditModal(recordId) {
-    var rec = findRecord(recordId);
-    if (!rec || !recordEditModal) return;
-    editingRecordId = recordId;
-    if (recordEditSymbol) recordEditSymbol.textContent = symbolLabel(rec);
-    buildRecordQtySelect(rec.stock, rec.qty);
-    syncRecordEditRateUI();
-    recordEditModal.classList.add('is-open');
-    recordEditModal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-open');
-    if (recordEditQty) recordEditQty.focus();
-  }
-
-  function closeRecordEditModal() {
-    if (!recordEditModal) return;
-    recordEditModal.classList.remove('is-open');
-    recordEditModal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-    editingRecordId = null;
-  }
-
-  function saveRecordEdit() {
-    if (!editingRecordId) return;
-    var rec = findRecord(editingRecordId);
-    if (!rec) return;
-    if (recordEditQty) {
-      rec.qty = parseInt(recordEditQty.value, 10) || 0;
-    }
-    closeRecordEditModal();
-    renderDailyRecords();
-  }
-
-  function addDailyRecordsFromSubmit() {
+  function addHistoryRecordsFromSubmit() {
     var now = formatDateTimeNow();
     var added = false;
     dataRows.forEach(function (row) {
-      if (row.hidden || !isRowSelected(row)) return;
+      if (!isRowSelected(row)) return;
       var qty = getRowQty(row);
       if (qty <= 0) return;
-      var code = row.getAttribute('data-code') || '';
-      var name = row.getAttribute('data-name') || '';
-      var stock = parseStock(row);
-      var existing = null;
-      for (var i = 0; i < dailyRecords.length; i += 1) {
-        if (dailyRecords[i].code === code) {
-          existing = dailyRecords[i];
-          break;
-        }
-      }
-      if (existing) {
-        existing.qty = qty;
-        existing.date = now.date;
-        existing.time = now.time;
-        existing.stock = stock;
-      } else {
-        dailyRecords.push({
-          id: 'dr-' + Date.now() + '-' + code,
-          date: now.date,
-          time: now.time,
-          code: code,
-          name: name,
-          stock: stock,
-          qty: qty
-        });
-      }
+      historyRecords.push({
+        id: 'hr-' + Date.now() + '-' + (row.getAttribute('data-code') || ''),
+        date: now.date,
+        code: row.getAttribute('data-code') || '',
+        name: row.getAttribute('data-name') || '',
+        qty: qty,
+        rate: rateValue,
+        status: HISTORY_STATUS.submitted
+      });
       added = true;
     });
-    if (added) renderDailyRecords();
+    if (added) renderHistoryRecords();
   }
 
-  if (recordEditCancel) {
-    recordEditCancel.addEventListener('click', closeRecordEditModal);
-  }
-  if (recordEditBackdrop) {
-    recordEditBackdrop.addEventListener('click', closeRecordEditModal);
-  }
-  if (recordEditSave) {
-    recordEditSave.addEventListener('click', saveRecordEdit);
-  }
-  if (recordRateDecrease) {
-    recordRateDecrease.addEventListener('click', function () {
-      rateValue = clampRate(rateValue - RATE_STEP);
-      syncRecordEditRateUI();
+  if (historyQueryForm) {
+    historyQueryForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      historyFilter.from = isoToSlash(historyDateFrom && historyDateFrom.value) || HISTORY_LAUNCH_DATE;
+      historyFilter.to = isoToSlash(historyDateTo && historyDateTo.value) || formatDateTimeNow().date;
+      historyFilter.stock = historyStockQuery ? historyStockQuery.value : '';
+      historyFilter.status = historyStatusQuery ? historyStatusQuery.value : '';
+      renderHistoryRecords();
     });
   }
-  if (recordRateIncrease) {
-    recordRateIncrease.addEventListener('click', function () {
-      rateValue = clampRate(rateValue + RATE_STEP);
-      syncRecordEditRateUI();
+  if (historyQueryClear) {
+    historyQueryClear.addEventListener('click', function () {
+      initHistoryQueryDefaults();
+      renderHistoryRecords();
     });
+  }
+  if (historyExportBtn) {
+    historyExportBtn.addEventListener('click', exportHistoryRecords);
   }
 
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
-    if (recordEditModal && recordEditModal.classList.contains('is-open')) {
-      closeRecordEditModal();
-      return;
-    }
     if (confirmModal && confirmModal.classList.contains('is-open')) {
       closeConfirmModal();
     }
@@ -2115,9 +2450,12 @@ body.modal-open {
   initRateStepper();
   initQtySteppers();
   initRowSelections();
+  initDemoSwitch();
+  applyPageAvailability();
   initRateTip();
   applyFilter();
-  renderDailyRecords();
+  initHistoryQueryDefaults();
+  renderHistoryRecords();
 })();
   </script>
 </body>

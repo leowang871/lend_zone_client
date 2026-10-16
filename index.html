@@ -610,22 +610,65 @@ button { font-family: inherit; cursor: pointer; }
   line-height: 1.7;
 }
 .pkt-notes h3 {
-  margin: 0 0 10px;
+  margin: 0 0 14px;
   font-size: var(--pkt-fs-body);
   font-weight: 600;
   color: var(--pkt-ink);
 }
-.pkt-notes ul { margin: 0; padding-left: 1.2em; }
-.pkt-notes li { margin-bottom: 6px; }
+.pkt-notes__section {
+  margin: 0 0 16px;
+}
+.pkt-notes__section:last-child { margin-bottom: 0; }
+.pkt-notes__section-title {
+  margin: 0 0 8px;
+  font-size: var(--pkt-fs-body);
+  font-weight: 700;
+  color: var(--pkt-ink);
+}
+.pkt-notes ol {
+  margin: 0;
+  padding-left: 1.35em;
+}
+.pkt-notes li { margin-bottom: 8px; }
+.pkt-notes li:last-child { margin-bottom: 0; }
 .pkt-notes__alert,
-.pkt-notes li.pkt-notes__alert {
+.pkt-notes li.pkt-notes__alert,
+.pkt-notes__section-title.pkt-notes__alert {
   color: var(--pkt-red-main);
   font-weight: 700;
 }
-.pkt-modal__warning strong {
-  display: block;
+.pkt-notes__formula {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  background: var(--pkt-gray-50);
+  border-radius: var(--pkt-r-md);
+  font-weight: 600;
+  color: var(--pkt-ink);
+}
+.pkt-modal__warning {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 4px 0;
+  color: var(--pkt-red-main);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  text-align: left;
+}
+.pkt-modal__warning-list {
+  margin: 0;
+  padding-left: 1.2em;
+}
+.pkt-modal__warning-list li {
   margin-bottom: 6px;
+}
+.pkt-modal__warning-list li:last-child { margin-bottom: 0; }
+.pkt-modal__warning-confirm {
+  margin: 4px 0 0;
   font-weight: 700;
+  text-align: center;
 }
 .pkt-rate-bar--submit {
   margin: 24px 0 0;
@@ -834,16 +877,6 @@ button { font-family: inherit; cursor: pointer; }
 }
 .pkt-modal__sub {
   display: none;
-}
-.pkt-modal__warning {
-  order: 2;
-  display: block;
-  margin: 14px 4px 0;
-  color: var(--pkt-red-main);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.55;
-  text-align: center;
 }
 .pkt-modal__actions {
   display: flex;
@@ -1232,7 +1265,9 @@ body.modal-open {
     font-size: 12px;
     line-height: 1.55;
   }
-  .pkt-notes h3 { font-size: 14px; margin-bottom: 6px; }
+  .pkt-notes h3 { font-size: 14px; margin-bottom: 10px; }
+  .pkt-notes__section-title { font-size: 13px; }
+  .pkt-notes__formula { font-size: 12px; padding: 8px 10px; }
 
   .float-cs { display: none; }
 
@@ -1265,6 +1300,7 @@ body.modal-open {
     margin: 10px 4px 0;
     font-size: 13px;
   }
+  .pkt-modal__warning-confirm { font-size: 14px; }
   .pkt-modal__actions {
     gap: 12px;
     padding: 0 16px 16px;
@@ -1441,13 +1477,32 @@ body.modal-open {
 
       <div class="pkt-notes">
         <h3>注意事項：</h3>
-        <ul>
-          <li class="pkt-notes__alert">送出後即不可更改出借標的、利率與張數，請確認無誤後再送出。</li>
-          <li>請先勾選標的並調整出借張數，再於下方統一設定出借利率。</li>
-          <li>券差出借張數請以「[-]」「[+]」調整，或於中間欄位手動輸入整數；可選範圍為 0 張至該標的可券差出借張數，超出範圍將自動調整為合法值。</li>
-          <li>券差出借利率請以「[-]」「[+]」調整，或於中間欄位手動輸入整數，預設 3%，可調範圍 1%～7%（每次 1%），超出範圍將自動調整為合法值；本次所有已選標的套用同一利率。</li>
-          <li>可券差出借張數為查詢當下可出借參考，實際可券差出借數量與利率以送出時系統檢核為準。</li>
-        </ul>
+        <section class="pkt-notes__section">
+          <h4 class="pkt-notes__section-title pkt-notes__alert">一、申請及結果查詢</h4>
+          <ol>
+            <li class="pkt-notes__alert">同一交易日、同一股票，線上出借申請僅限送出一次。</li>
+            <li class="pkt-notes__alert">出借申請送出後即無法取消或修改，請確認後再送出。</li>
+            <li class="pkt-notes__alert">請於申請當日 18:00 後至「券差出借專區」查詢出借結果。送出申請不代表出借成功。</li>
+          </ol>
+        </section>
+        <section class="pkt-notes__section">
+          <h4 class="pkt-notes__section-title">二、出借限制及股票返還</h4>
+          <ol>
+            <li>股票出借成功後，該筆出借部位於出借期間內無法自行賣出。股票返還後，APP 顯示之該筆股票成本將歸零，請於出借前自行記錄原始成本，以利後續查詢。</li>
+            <li>出借股票預計於出借日起第 3 個工作日返還至您的集保帳戶。若借券人未能順利完成回補，股票返還時間將延後。</li>
+          </ol>
+        </section>
+        <section class="pkt-notes__section">
+          <h4 class="pkt-notes__section-title">三、出借收入計算及入帳</h4>
+          <ol>
+            <li>
+              出借收入計算公式如下：
+              <p class="pkt-notes__formula">出借收入＝實際出借股數 × 出借當日收盤價 × 成交費率</p>
+            </li>
+            <li>出借收入將扣除 10% 作為手續費，並於出借日起第 3 個工作日匯入至您的口袋錢包。若借券人未能順利完成回補，出借收入入帳時間將延後。</li>
+            <li>所得稅扣繳：出借收入超過新臺幣 20,010 元者，另預扣 10% 所得稅額。</li>
+          </ol>
+        </section>
       </div>
       </div>
 
@@ -1506,10 +1561,14 @@ body.modal-open {
       <div class="pkt-modal__body">
         <p class="pkt-modal__title" id="confirm-modal-title">確認券差借券內容</p>
         <ul class="pkt-submit-summary" id="confirm-summary" aria-label="確認券差借券明細"></ul>
-        <p class="pkt-modal__warning">
-          <strong>送出後即不可更改出借標的、利率與張數。</strong>
-          券差出借股票後，股票撥回時買進成本將歸0，送出前請確認股票成本價格。
-        </p>
+        <div class="pkt-modal__warning">
+          <ol class="pkt-modal__warning-list">
+            <li>實際出借股數將依本公司借券需求及成交情形而定，可能少於申請股數。</li>
+            <li>申請送出後即無法取消或修改，且送出申請不代表出借成功。</li>
+            <li>券差出借股票後，股票撥回時買進成本將歸0，送出前請確認股票成本價格。</li>
+          </ol>
+          <p class="pkt-modal__warning-confirm">是否確認送出？</p>
+        </div>
       </div>
       <div class="pkt-modal__actions">
         <button type="button" class="pkt-modal__btn pkt-modal__btn--cancel" id="confirm-cancel">取消</button>
